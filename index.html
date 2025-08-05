@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>Lucky Box Game - Progressive Levels! 🎯</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/canvas-confetti/1.9.2/confetti.browser.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            -webkit-overflow-scrolling: touch;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .game-container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 10px;
+            position: relative;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 20px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .game-title {
+            font-size: 2.5em;
+            font-weight: bold;
+            background: linear-gradient(45deg, #ffd700, #ffed4e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            margin-bottom: 10px;
+        }
+
+        .wallet-section {
+            background: linear-gradient(45deg, #11998e, #38ef7d);
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+        }
+
+        .wallet-balance {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .level-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .current-level {
+            font-size: 2em;
+            font-weight: bold;
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .level-reward {
+            font-size: 1.5em;
+            color: #ffd700;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .progress-bar {
+            background: rgba(255, 255, 255, 0.2);
+            height: 10px;
+            border-radius: 5px;
+            margin: 15px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(45deg, #11998e, #38ef7d);
+            height: 100%;
+            border-radius: 5px;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .level-path {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 0;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .level-node {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+            font-size: 0.9em;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .level-node.completed {
+            background: linear-gradient(45deg, #11998e, #38ef7d);
+            border-color: #38ef7d;
+            box-shadow: 0 0 15px rgba(56, 239, 125, 0.5);
+        }
+
+        .level-node.current {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            border-color: #ff6b6b;
+            animation: currentLevelPulse 2s infinite;
+            box-shadow: 0 0 20px rgba(255, 107, 107, 0.7);
+        }
+
+        @keyframes currentLevelPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .level-node.locked {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .game-grid {
+            display: grid;
+            gap: 8px;
+            margin: 20px 0;
+            justify-content: center;
+        }
+
+        .grid-2x2 { grid-template-columns: repeat(2, 1fr); }
+        .grid-3x3 { grid-template-columns: repeat(3, 1fr); }
+        .grid-4x4 { grid-template-columns: repeat(4, 1fr); }
+        .grid-5x5 { grid-template-columns: repeat(5, 1fr); }
+        .grid-6x6 { grid-template-columns: repeat(6, 1fr); }
+        .grid-7x7 { grid-template-columns: repeat(7, 1fr); }
+        .grid-8x8 { grid-template-columns: repeat(8, 1fr); }
+
+        .box {
+            aspect-ratio: 1;
+            background: linear-gradient(145deg, #8B4513, #A0522D, #CD853F);
+            border: 4px solid #654321;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #2F1B14;
+            transition: all 0.3s ease;
+            box-shadow: 
+                inset 2px 2px 8px rgba(255,255,255,0.3),
+                inset -2px -2px 8px rgba(0,0,0,0.4),
+                0 4px 15px rgba(0,0,0,0.3);
+            position: relative;
+            overflow: hidden;
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.3);
+        }
+
+        .box:hover {
+            transform: translateY(-2px);
+            box-shadow: 
+                inset 2px 2px 8px rgba(255,255,255,0.3),
+                inset -2px -2px 8px rgba(0,0,0,0.4),
+                0 8px 25px rgba(0,0,0,0.4);
+        }
+
+        .box:active {
+            transform: translateY(0);
+        }
+
+        .box.breaking {
+            animation: breakBox 0.6s ease-in-out;
+        }
+
+        @keyframes breakBox {
+            0% { transform: scale(1) rotate(0deg); }
+            25% { transform: scale(1.1) rotate(-5deg); }
+            50% { transform: scale(0.9) rotate(5deg); }
+            75% { transform: scale(1.05) rotate(-3deg); }
+            100% { transform: scale(1) rotate(0deg); }
+        }
+
+        .box.revealed-win {
+            background: linear-gradient(145deg, #FFD700, #FFA500, #FF8C00);
+            border-color: #FFD700;
+            color: #8B4513;
+            animation: winGlow 2s ease-in-out;
+        }
+
+        @keyframes winGlow {
+            0%, 100% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.5); }
+            50% { box-shadow: 0 0 40px rgba(255, 215, 0, 0.8); }
+        }
+
+        .box.revealed-empty {
+            background: linear-gradient(145deg, #808080, #A9A9A9, #C0C0C0);
+            border-color: #696969;
+            color: #2F2F2F;
+        }
+
+        .box.revealed-special {
+            background: linear-gradient(145deg, #FF69B4, #FF1493, #DC143C);
+            border-color: #FF69B4;
+            color: white;
+            animation: specialGlow 2s ease-in-out;
+        }
+
+        @keyframes specialGlow {
+            0%, 100% { box-shadow: 0 0 20px rgba(255, 105, 180, 0.5); }
+            50% { box-shadow: 0 0 40px rgba(255, 105, 180, 0.8); }
+        }
+
+        .play-button {
+            width: 100%;
+            padding: 20px;
+            font-size: 1.5em;
+            font-weight: bold;
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(238, 90, 36, 0.3);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .play-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(238, 90, 36, 0.4);
+        }
+
+        .play-button:active {
+            transform: translateY(0);
+        }
+
+        .play-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .stats-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .stats-section h3 {
+            text-align: center;
+            margin-bottom: 15px;
+            color: #ffd700;
+        }
+
+        .stats-section p {
+            margin: 8px 0;
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        .live-players {
+            font-size: 1.1em;
+            color: #ffd700;
+            font-weight: bold;
+        }
+
+        .level-info {
+            font-size: 1.1em;
+            margin-top: 15px;
+            color: #ffd700;
+        }
+
+        .win-amount {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #ffd700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            margin: 20px 0;
+        }
+
+        /* Modal Styles */
+        .payment-modal, .result-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content, .result-content {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            color: white;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .close-btn {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.1em;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .close-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(238, 90, 36, 0.3);
+        }
+
+        .upload-btn {
+            background: linear-gradient(45deg, #11998e, #38ef7d);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            margin: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .upload-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(56, 239, 125, 0.3);
+        }
+
+        .qr-code {
+            background: white;
+            color: #333;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-weight: bold;
+            border: 2px dashed #ddd;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .upload-section {
+            margin: 20px 0;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            .game-container {
+                padding: 5px;
+            }
+
+            .game-title {
+                font-size: 2em;
+            }
+
+            .wallet-balance {
+                font-size: 1.5em;
+            }
+
+            .current-level {
+                font-size: 1.8em;
+            }
+
+            .level-reward {
+                font-size: 1.3em;
+            }
+
+            .play-button {
+                font-size: 1.3em;
+                padding: 15px;
+            }
+
+            .level-node {
+                width: 40px;
+                height: 40px;
+                font-size: 0.8em;
+            }
+
+            .box {
+                font-size: 1.2em;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .game-title {
+                font-size: 1.8em;
+            }
+
+            .wallet-balance {
+                font-size: 1.3em;
+            }
+
+            .current-level {
+                font-size: 1.5em;
+            }
+
+            .level-reward {
+                font-size: 1.1em;
+            }
+
+            .play-button {
+                font-size: 1.1em;
+                padding: 12px;
+            }
+
+            .level-node {
+                width: 35px;
+                height: 35px;
+                font-size: 0.7em;
+            }
+
+            .box {
+                font-size: 1em;
+            }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(255, 107, 107, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(255, 107, 107, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(255, 107, 107, 0);
+            }
+        }
+
+        .jackpot-mode {
+            background: linear-gradient(45deg, #ffd700, #ffed4e) !important;
+            animation: jackpotPulse 1s infinite;
+        }
+
+        @keyframes jackpotPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <!-- Header -->
+        <div class="header">
+            <h1 class="game-title">🎯 Lucky Box Game</h1>
+            <div class="live-players">🔴 LIVE: 247 players online</div>
+        </div>
+
+        <!-- Wallet Section -->
+        <div class="wallet-section">
+            <div class="wallet-balance">💰 Balance: ₹<span id="walletAmount">500</span></div>
+        </div>
+
+        <!-- Level Section -->
+        <div class="level-section">
+            <div class="current-level">Level <span id="currentLevel">1</span></div>
+            <div class="level-reward">Win: <span id="currentReward">1.5x</span> (₹<span id="currentAmount">300</span>)</div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="level-info" id="levelInfo">
+                🎯 Find the special box in this 2×2 grid to win 1.5x and unlock Level 2!
+            </div>
+        </div>
+
+        <!-- Level Path -->
+        <div class="level-path" id="levelPath">
+            <div class="level-node current" data-level="1">
+                <div>L1</div>
+                <small>1.5x</small>
+            </div>
+            <div class="level-node locked" data-level="2">
+                <div>L2</div>
+                <small>2x</small>
+            </div>
+            <div class="level-node locked" data-level="3">
+                <div>L3</div>
+                <small>3x</small>
+            </div>
+            <div class="level-node locked" data-level="4">
+                <div>L4</div>
+                <small>5x</small>
+            </div>
+            <div class="level-node locked" data-level="5">
+                <div>L5</div>
+                <small>8x</small>
+            </div>
+            <div class="level-node locked" data-level="6">
+                <div>L6</div>
+                <small>12x</small>
+            </div>
+            <div class="level-node locked" data-level="7">
+                <div>L7</div>
+                <small>20x</small>
+            </div>
+        </div>
+
+        <!-- Stats Section -->
+        <div class="stats-section">
+            <h3>🏆 Recent Level Completions</h3>
+            <div id="recentWinners">
+                <p>🎉 Rahul completed Level 4 (8x) - 2 min ago</p>
+                <p>💰 Priya completed Level 2 (3x) - 5 min ago</p>
+                <p>🔥 Amit completed Level 5 (12x) - 8 min ago</p>
+            </div>
+        </div>
+
+        <!-- Game Grid -->
+        <div class="game-grid grid-2x2" id="gameGrid">
+            <!-- Boxes will be generated by JavaScript -->
+        </div>
+
+        <!-- Play Button -->
+        <button class="play-button pulse" id="playButton">
+            🎲 PLAY LEVEL 1 - ₹200 🎲
+        </button>
+
+        <!-- Add Balance Button -->
+        <button class="play-button" style="background: linear-gradient(45deg, #11998e, #38ef7d); margin-top: 10px;" onclick="showPaymentModal()">
+            💳 Add Balance
+        </button>
+    </div>
+
+    <!-- Payment Modal -->
+    <div class="payment-modal" id="paymentModal">
+        <div class="modal-content">
+            <h2>💳 Add Money to Wallet</h2>
+            
+            <!-- Amount Selection Step -->
+            <div id="amountStep">
+                <p style="margin-bottom: 15px; font-size: 1.1em;">How much do you want to add?</p>
+                <div style="margin: 20px 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;">
+                    <button class="upload-btn" onclick="selectAmount(200)">₹200</button>
+                    <button class="upload-btn" onclick="selectAmount(500)">₹500</button>
+                    <button class="upload-btn" onclick="selectAmount(1000)">₹1000</button>
+                    <button class="upload-btn" onclick="selectAmount(2000)">₹2000</button>
+                </div>
+                <div style="margin: 20px 0;">
+                    <input type="number" id="customAmount" placeholder="Enter custom amount" style="padding: 12px; border-radius: 10px; border: 2px solid #ddd; width: 200px; text-align: center; font-size: 16px; margin-bottom: 10px;">
+                    <br>
+                    <button class="upload-btn" onclick="selectCustomAmount()">Add Custom Amount</button>
+                </div>
+            </div>
+
+            <!-- Payment Step -->
+            <div id="paymentStep" style="display: none;">
+                <p style="margin-bottom: 15px; font-size: 1.1em;">Pay <strong id="selectedAmount">₹200</strong> using UPI</p>
+                
+                <div class="qr-code">
+                    📱 UPI QR CODE<br>
+                    Pay <span id="qrAmount">₹200</span> Here
+                </div>
+                
+                <p style="margin: 15px 0;"><strong>UPI ID:</strong> game@paytm</p>
+                
+                <div class="upload-section">
+                    <p style="margin-bottom: 10px;">Upload payment screenshot:</p>
+                    <input type="file" class="file-input" id="screenshotFile" accept="image/*">
+                    <label for="screenshotFile" class="upload-btn">📸 Choose Screenshot</label>
+                    <button class="upload-btn" onclick="uploadScreenshot()">✅ Submit Payment</button>
+                </div>
+                
+                <button class="upload-btn" onclick="goBackToAmount()" style="background: linear-gradient(45deg, #666, #888); margin-top: 10px;">← Back to Amount</button>
+            </div>
+            
+            <button class="close-btn" onclick="closePaymentModal()">Close</button>
+        </div>
+    </div>
+
+    <!-- Result Modal -->
+    <div class="result-modal" id="resultModal">
+        <div class="result-content">
+            <div id="resultContent">
+                <!-- Result content will be inserted here -->
+            </div>
+            <button class="close-btn" onclick="closeResultModal()">Continue</button>
+        </div>
+    </div>
+
+    <script>
+        // Game Configuration
+        const LEVELS = [
+            { level: 1, grid: 2, multiplier: 1.5, specialBoxes: 1, winChance: 0.40 },
+            { level: 2, grid: 3, multiplier: 2, specialBoxes: 1, winChance: 0.30 },
+            { level: 3, grid: 4, multiplier: 3, specialBoxes: 1, winChance: 0.22 },
+            { level: 4, grid: 5, multiplier: 5, specialBoxes: 1, winChance: 0.15 },
+            { level: 5, grid: 6, multiplier: 8, specialBoxes: 1, winChance: 0.10 },
+            { level: 6, grid: 7, multiplier: 12, specialBoxes: 1, winChance: 0.08 },
+            { level: 7, grid: 8, multiplier: 20, specialBoxes: 1, winChance: 0.05 }
+        ];
+
+        // Game State
+        let gameState = {
+            currentLevel: 1,
+            maxUnlockedLevel: 1,
+            gameActive: false,
+            specialBoxIndex: -1,
+            totalBoxes: 4
+        };
+
+        // Mock user data (start with some balance for testing)
+        let userData = {
+            balance: 500,
+            gamesPlayed: 0,
+            totalWon: 0,
+            levelsCompleted: []
+        };
+
+        // Sound effects
+        function playSound(type) {
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioCtx.createOscillator();
+                const gainNode = audioCtx.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioCtx.destination);
+                
+                if (type === 'win') {
+                    oscillator.frequency.setValueAtTime(800, audioCtx.currentTime);
+                    oscillator.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.1);
+                } else if (type === 'lose') {
+                    oscillator.frequency.setValueAtTime(400, audioCtx.currentTime);
+                    oscillator.frequency.exponentialRampToValueAtTime(200, audioCtx.currentTime + 0.2);
+                }
+                
+                gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+                
+                oscillator.start(audioCtx.currentTime);
+                oscillator.stop(audioCtx.currentTime + 0.2);
+            } catch (e) {
+                console.log('Audio not supported');
+            }
+        }
+
+        // Initialize game
+        function initGame() {
+            updateWalletDisplay();
+            updateLevelDisplay();
+            updateLevelPath();
+            generateGrid();
+            
+            // Add click handler for play button
+            document.getElementById('playButton').addEventListener('click', startGame);
+            
+            // Add click handlers for level nodes
+            document.querySelectorAll('.level-node').forEach(node => {
+                node.addEventListener('click', function() {
+                    const level = parseInt(this.dataset.level);
+                    if (level <= gameState.maxUnlockedLevel) {
+                        gameState.currentLevel = level;
+                        updateLevelDisplay();
+                        updateLevelPath();
+                        generateGrid();
+                    }
+                });
+            });
+            
+            // Update live players count
+            setInterval(() => {
+                const count = 240 + Math.floor(Math.random() * 20);
+                document.querySelector('.live-players').textContent = `🔴 LIVE: ${count} players online`;
+            }, 5000);
+        }
+
+        // Update wallet display
+        function updateWalletDisplay() {
+            document.getElementById('walletAmount').textContent = userData.balance;
+        }
+
+        // Update level display
+        function updateLevelDisplay() {
+            const currentLevelConfig = LEVELS[gameState.currentLevel - 1];
+            const winAmount = 200 * currentLevelConfig.multiplier;
+            
+            document.getElementById('currentLevel').textContent = gameState.currentLevel;
+            document.getElementById('currentReward').textContent = currentLevelConfig.multiplier + 'x';
+            document.getElementById('currentAmount').textContent = winAmount;
+            
+            const levelInfo = document.getElementById('levelInfo');
+            levelInfo.innerHTML = `🎯 Find the special box in this ${currentLevelConfig.grid}×${currentLevelConfig.grid} grid to win ${currentLevelConfig.multiplier}x and unlock Level ${gameState.currentLevel + 1}!`;
+            
+            // Update progress bar
+            const progress = ((gameState.currentLevel - 1) / (LEVELS.length - 1)) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+            
+            // Update play button
+            const playButton = document.getElementById('playButton');
+            playButton.textContent = `🎲 PLAY LEVEL ${gameState.currentLevel} - ₹200 🎲`;
+            playButton.disabled = userData.balance < 200;
+        }
+
+        // Update level path
+        function updateLevelPath() {
+            const levelNodes = document.querySelectorAll('.level-node');
+            levelNodes.forEach((node, index) => {
+                const level = index + 1;
+                node.classList.remove('current', 'completed', 'locked');
+                
+                if (level < gameState.currentLevel) {
+                    node.classList.add('completed');
+                } else if (level === gameState.currentLevel) {
+                    node.classList.add('current');
+                } else if (level <= gameState.maxUnlockedLevel) {
+                    // Unlocked but not current
+                } else {
+                    node.classList.add('locked');
+                }
+            });
+        }
+
+        // Generate game grid
+        function generateGrid() {
+            const currentLevelConfig = LEVELS[gameState.currentLevel - 1];
+            const grid = document.getElementById('gameGrid');
+            const gridSize = currentLevelConfig.grid;
+            
+            grid.className = `game-grid grid-${gridSize}x${gridSize}`;
+            grid.innerHTML = '';
+            
+            gameState.totalBoxes = gridSize * gridSize;
+            
+            for (let i = 0; i < gameState.totalBoxes; i++) {
+                const box = document.createElement('div');
+                box.className = 'box';
+                box.setAttribute('data-index', i);
+                box.addEventListener('click', () => selectBox(i));
+                grid.appendChild(box);
+            }
+        }
+
+        // Generate special box
+        function generateSpecialBox() {
+            gameState.specialBoxIndex = Math.floor(Math.random() * gameState.totalBoxes);
+        }
+
+        // Start game
+        function startGame() {
+            if (userData.balance < 200) {
+                alert('Insufficient balance! Please add money to your wallet.');
+                return;
+            }
+            
+            if (gameState.gameActive) return;
+            
+            userData.balance -= 200;
+            updateWalletDisplay();
+            
+            gameState.gameActive = true;
+            generateSpecialBox();
+            
+            document.getElementById('playButton').disabled = true;
+            
+            // Disable box interactions until selection
+            document.querySelectorAll('.box').forEach(box => {
+                box.style.pointerEvents = 'auto';
+            });
+        }
+
+        // Select box
+        function selectBox(index) {
+            if (!gameState.gameActive) return;
+            
+            const clickedBox = document.querySelector(`[data-index="${index}"]`);
+            if (clickedBox.classList.contains('breaking') || 
+                clickedBox.classList.contains('revealed-win') || 
+                clickedBox.classList.contains('revealed-empty')) {
+                return;
+            }
+            
+            // Disable all box interactions
+            document.querySelectorAll('.box').forEach(box => {
+                box.style.pointerEvents = 'none';
+            });
+            
+            const currentLevelConfig = LEVELS[gameState.currentLevel - 1];
+            const isSpecialBox = index === gameState.specialBoxIndex;
+            let won = false;
+            let winAmount = 0;
+            
+            if (isSpecialBox) {
+                won = true;
+                winAmount = 200 * currentLevelConfig.multiplier;
+                userData.balance += winAmount;
+                userData.totalWon += winAmount;
+                playSound('win');
+                
+                // Show breaking animation for selected box
+                clickedBox.classList.add('breaking');
+                
+                // Show confetti for win
+                if (typeof confetti !== 'undefined') {
+                    confetti({
+                        particleCount: 100,
+                        spread: 70,
+                        origin: { y: 0.6 }
+                    });
+                    
+                    setTimeout(() => {
+                        confetti({
+                            particleCount: 50,
+                            angle: 60,
+                            spread: 55,
+                            origin: { x: 0 }
+                        });
+                        confetti({
+                            particleCount: 50,
+                            angle: 120,
+                            spread: 55,
+                            origin: { x: 1 }
+                        });
+                    }, 200);
+                }
+            } else {
+                playSound('lose');
+                clickedBox.classList.add('breaking');
+            }
+            
+            // Reveal all boxes after break animation
+            revealAllBoxes(index, won, winAmount);
+            
+            gameState.gameActive = false;
+            userData.gamesPlayed++;
+            updateWalletDisplay();
+            
+            // Show result modal after all animations
+            setTimeout(() => {
+                showResultModal(won, winAmount, currentLevelConfig);
+            }, 1000);
+        }
+
+        // Reveal all boxes with proper animations
+        function revealAllBoxes(selectedIndex, won, winAmount) {
+            document.querySelectorAll('.box').forEach((box, index) => {
+                if (index === selectedIndex) {
+                    // Selected box already has breaking animation
+                    setTimeout(() => {
+                        if (won) {
+                            box.classList.remove('breaking');
+                            box.classList.add('revealed-win');
+                            box.innerHTML = `<div style="font-size: 0.8em;">💰</div><div>${winAmount / 200}x</div>`;
+                        } else {
+                            box.classList.remove('breaking');
+                            box.classList.add('revealed-empty');
+                            box.textContent = '❌';
+                        }
+                    }, 100);
+                } else {
+                    // Other boxes break and reveal with staggered timing
+                    setTimeout(() => {
+                        box.classList.add('breaking');
+                        
+                        setTimeout(() => {
+                            box.classList.remove('breaking');
+                            if (index === gameState.specialBoxIndex && !won) {
+                                box.classList.add('revealed-special');
+                                const multiplier = LEVELS[gameState.currentLevel - 1].multiplier;
+                                box.innerHTML = `<div style="font-size: 0.7em;">💎</div><div>${multiplier}x</div>`;
+                            } else {
+                                box.classList.add('revealed-empty');
+                                box.textContent = '';
+                            }
+                        }, 600);
+                    }, index * 100);
+                }
+            });
+        }
+
+        // Show result modal
+        function showResultModal(won, winAmount, levelConfig) {
+            const modal = document.getElementById('resultModal');
+            const content = document.getElementById('resultContent');
+            
+            if (won) {
+                // Level completed
+                if (!userData.levelsCompleted.includes(gameState.currentLevel)) {
+                    userData.levelsCompleted.push(gameState.currentLevel);
+                }
+                
+                if (gameState.currentLevel === 7) {
+                    // Game completed
+                    content.innerHTML = `
+                        <h2>🎊 CHAMPION! 🎊</h2>
+                        <div class="win-amount">+₹${winAmount}</div>
+                        <p>🏆 You've completed ALL levels!</p>
+                        <p>💰 Your new balance: ₹${userData.balance}</p>
+                        <p>🎯 You can now restart from Level 1 for more wins!</p>
+                    `;
+                    
+                    // Reset to level 1 after completing all levels
+                    setTimeout(() => {
+                        gameState.currentLevel = 1;
+                        gameState.maxUnlockedLevel = 7; // Keep all levels unlocked
+                    }, 2000);
+                } else {
+                    // Level up
+                    content.innerHTML = `
+                        <h2>🎉 LEVEL COMPLETED! 🎉</h2>
+                        <div class="win-amount">+₹${winAmount}</div>
+                        <p>🆙 Level ${gameState.currentLevel} → Level ${gameState.currentLevel + 1}</p>
+                        <p>💰 Your new balance: ₹${userData.balance}</p>
+                        <p>🎯 Next: ${LEVELS[gameState.currentLevel].grid}×${LEVELS[gameState.currentLevel].grid} grid, ${LEVELS[gameState.currentLevel].multiplier}x multiplier!</p>
+                    `;
+                    
+                    // Level up
+                    gameState.currentLevel++;
+                    gameState.maxUnlockedLevel = Math.max(gameState.maxUnlockedLevel, gameState.currentLevel);
+                    playSound('win');
+                }
+            } else {
+                content.innerHTML = `
+                    <h2>😔 Try Again!</h2>
+                    <p>You didn't find the special box this time.</p>
+                    <p>💡 The ${levelConfig.multiplier}x box was there - keep trying!</p>
+                    <p>💰 Your balance: ₹${userData.balance}</p>
+                    <p>🎯 ${userData.balance >= 200 ? 'Try Level ' + gameState.currentLevel + ' again!' : 'Add balance to continue playing!'}</p>
+                `;
+            }
+            
+            modal.style.display = 'flex';
+            updateLiveWinners();
+        }
+
+        // Close result modal
+        function closeResultModal() {
+            document.getElementById('resultModal').style.display = 'none';
+            resetGame();
+        }
+
+        // Reset game with proper cleanup
+        function resetGame() {
+            updateLevelDisplay();
+            generateGrid();
+            document.getElementById('playButton').disabled = false;
+            
+            // Re-enable box interactions
+            document.querySelectorAll('.box').forEach(box => {
+                box.style.pointerEvents = 'auto';
+            });
+        }
+
+        // Payment system variables
+        let selectedPaymentAmount = 0;
+
+        // Payment modal functions
+        function showPaymentModal() {
+            document.getElementById('paymentModal').style.display = 'flex';
+            document.getElementById('amountStep').style.display = 'block';
+            document.getElementById('paymentStep').style.display = 'none';
+        }
+
+        function closePaymentModal() {
+            document.getElementById('paymentModal').style.display = 'none';
+            // Reset the modal
+            document.getElementById('amountStep').style.display = 'block';
+            document.getElementById('paymentStep').style.display = 'none';
+            document.getElementById('customAmount').value = '';
+            selectedPaymentAmount = 0;
+        }
+
+        function selectAmount(amount) {
+            selectedPaymentAmount = amount;
+            showPaymentStep();
+        }
+
+        function selectCustomAmount() {
+            const customAmount = parseInt(document.getElementById('customAmount').value);
+            if (customAmount && customAmount >= 100 && customAmount <= 50000) {
+                selectedPaymentAmount = customAmount;
+                showPaymentStep();
+            } else {
+                alert('Please enter an amount between ₹100 and ₹50,000');
+            }
+        }
+
+        function showPaymentStep() {
+            document.getElementById('amountStep').style.display = 'none';
+            document.getElementById('paymentStep').style.display = 'block';
+            document.getElementById('selectedAmount').textContent = '₹' + selectedPaymentAmount;
+            document.getElementById('qrAmount').textContent = '₹' + selectedPaymentAmount;
+        }
+
+        function goBackToAmount() {
+            document.getElementById('paymentStep').style.display = 'none';
+            document.getElementById('amountStep').style.display = 'block';
+        }
+
+        function uploadScreenshot() {
+            const fileInput = document.getElementById('screenshotFile');
+            if (fileInput.files.length === 0) {
+                alert('Please select a screenshot first!');
+                return;
+            }
+            
+            if (selectedPaymentAmount <= 0) {
+                alert('Error: Invalid payment amount!');
+                return;
+            }
+            
+            // Simulate upload and verification
+            alert(`📸 Screenshot uploaded successfully!\n\nAmount: ₹${selectedPaymentAmount}\n⏳ Payment verification in progress...\n\nAdmin will verify your payment within 2-3 minutes and update your balance.`);
+            
+            // Simulate balance update after delay (in real app, admin would do this)
+            setTimeout(() => {
+                userData.balance += selectedPaymentAmount;
+                updateWalletDisplay();
+                alert(`✅ Payment verified! ₹${selectedPaymentAmount} added to your wallet!\n\nNew Balance: ₹${userData.balance}`);
+                
+                // Show success animation
+                if (typeof confetti !== 'undefined') {
+                    confetti({
+                        particleCount: 50,
+                        spread: 50,
+                        origin: { y: 0.7 }
+                    });
+                }
+            }, 3000);
+            
+            closePaymentModal();
+        }
+
+        // Update live winners simulation
+        function updateLiveWinners() {
+            const winners = [
+                '🎉 Rahul completed Level 5 (8x) - 2 min ago',
+                '💰 Priya completed Level 3 (3x) - 5 min ago',
+                '🔥 Amit completed Level 6 (12x) - 8 min ago',
+                '✨ Sneha completed Level 2 (2x) - 12 min ago',
+                '🎯 Vikash completed Level 4 (5x) - 15 min ago',
+                '🏆 Maya became CHAMPION (20x) - 18 min ago',
+                '⭐ Ravi completed Level 7 (20x) - 22 min ago',
+                '🚀 Anita completed Level 1 (1.5x) - 25 min ago'
+            ];
+            
+            const winnerElement = document.getElementById('recentWinners');
+            const shuffled = winners.sort(() => 0.5 - Math.random()).slice(0, 3);
+            winnerElement.innerHTML = shuffled.map(winner => `<p>${winner}</p>`).join('');
+        }
+
+        // Initialize the game when page loads
+        window.addEventListener('load', initGame);
+
+        // Simulate live winner updates
+        setInterval(updateLiveWinners, 15000);
+    </script>
+</body>
+</html>
