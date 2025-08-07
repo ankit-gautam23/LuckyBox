@@ -6,9 +6,18 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="mobile-web-app-capable" content="yes">
-    <title>Lucky Box Game - Progressive Levels! 🎯</title>
+    <title>⚛️ Quantum Box Smasher - Progressive Levels! 🎯</title>
+    
+    <!-- Favicon and Icons -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚛️</text></svg>">
+    <link rel="icon" type="image/png" sizes="32x32" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚛️</text></svg>">
+    <link rel="icon" type="image/png" sizes="16x16" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚛️</text></svg>">
+    <link rel="apple-touch-icon" sizes="180x180" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚛️</text></svg>">
+    <link rel="manifest" href="data:application/manifest+json,{&quot;name&quot;:&quot;Quantum Box Smasher&quot;,&quot;short_name&quot;:&quot;Quantum Smasher&quot;,&quot;icons&quot;:[{&quot;src&quot;:&quot;data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚛️</text></svg>&quot;,&quot;sizes&quot;:&quot;192x192&quot;,&quot;type&quot;:&quot;image/svg+xml&quot;}],&quot;theme_color&quot;:&quot;#8b5cf6&quot;,&quot;background_color&quot;:&quot;#000000&quot;,&quot;display&quot;:&quot;standalone&quot;}">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/canvas-confetti/1.9.2/confetti.browser.min.js"></script>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600;700&family=Rajdhani:wght@300;400;500;600;700&display=swap');
+        
         * {
             margin: 0;
             padding: 0;
@@ -16,8 +25,9 @@
         }
 
         body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Orbitron', 'Exo 2', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: 
+                linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 15%, #16213e 30%, #0f3460 45%, #533483 60%, #8b5cf6 75%, #a855f7 90%, #c084fc 100%);
             min-height: 100vh;
             overflow-x: hidden;
             -webkit-overflow-scrolling: touch;
@@ -26,140 +36,430 @@
             -ms-user-select: none;
             user-select: none;
             -webkit-tap-highlight-color: transparent;
+            position: relative;
+        }
+
+        /* Quantum field background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(139, 92, 246, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(168, 85, 247, 0.25) 0%, transparent 50%),
+                radial-gradient(circle at 40% 60%, rgba(192, 132, 252, 0.2) 0%, transparent 50%),
+                radial-gradient(circle at 60% 40%, rgba(236, 72, 153, 0.15) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+            animation: quantumField 8s ease-in-out infinite;
+        }
+
+        @keyframes quantumField {
+            0%, 100% { 
+                opacity: 0.6; 
+                transform: scale(1) rotate(0deg);
+                filter: hue-rotate(0deg);
+            }
+            25% { 
+                opacity: 0.8; 
+                transform: scale(1.02) rotate(1deg);
+                filter: hue-rotate(90deg);
+            }
+            50% { 
+                opacity: 1; 
+                transform: scale(1.05) rotate(0deg);
+                filter: hue-rotate(180deg);
+            }
+            75% { 
+                opacity: 0.8; 
+                transform: scale(1.02) rotate(-1deg);
+                filter: hue-rotate(270deg);
+            }
+        }
+
+        /* Floating quantum particles */
+        body::after {
+            content: '⚛️ 🌌 🌀 💫 ⚡ 🌟';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            font-size: 1.8em;
+            color: rgba(255, 255, 255, 0.15);
+            pointer-events: none;
+            z-index: -1;
+            animation: quantumFloat 25s linear infinite;
+        }
+
+        @keyframes quantumFloat {
+            0% { 
+                transform: translateY(100vh) translateX(-100px) rotate(0deg) scale(0.8);
+                filter: hue-rotate(0deg);
+            }
+            25% { 
+                transform: translateY(75vh) translateX(50px) rotate(90deg) scale(1.2);
+                filter: hue-rotate(90deg);
+            }
+            50% { 
+                transform: translateY(50vh) translateX(100px) rotate(180deg) scale(0.9);
+                filter: hue-rotate(180deg);
+            }
+            75% { 
+                transform: translateY(25vh) translateX(-50px) rotate(270deg) scale(1.1);
+                filter: hue-rotate(270deg);
+            }
+            100% { 
+                transform: translateY(-100px) translateX(-100px) rotate(360deg) scale(0.8);
+                filter: hue-rotate(360deg);
+            }
         }
 
         .game-container {
-            max-width: 500px;
+            max-width: 100%;
             margin: 0 auto;
-            padding: 10px;
+            padding: 15px 10px;
             position: relative;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        @media (min-width: 480px) {
+            .game-container {
+                max-width: 420px;
+                padding: 25px 15px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .game-container {
+                max-width: 500px;
+                padding: 30px 20px;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .header {
             text-align: center;
             color: white;
-            margin-bottom: 20px;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .game-title {
-            font-size: 2.5em;
-            font-weight: bold;
-            background: linear-gradient(45deg, #ffd700, #ffed4e);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-            margin-bottom: 10px;
-        }
-
-        .wallet-section {
-            background: linear-gradient(45deg, #11998e, #38ef7d);
-            padding: 15px;
-            border-radius: 15px;
-            margin-bottom: 20px;
-            text-align: center;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
-        }
-
-        .wallet-balance {
-            font-size: 1.8em;
-            font-weight: bold;
-            color: white;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-
-        .level-section {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 20px;
-            margin: 20px 0;
-            text-align: center;
-            color: white;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .current-level {
-            font-size: 2em;
-            font-weight: bold;
-            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 10px;
-        }
-
-        .level-reward {
-            font-size: 1.5em;
-            color: #ffd700;
-            font-weight: bold;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-
-        .progress-bar {
-            background: rgba(255, 255, 255, 0.2);
-            height: 10px;
-            border-radius: 5px;
-            margin: 15px 0;
+            margin-bottom: 25px;
+            padding: 30px 20px;
+            background: 
+                linear-gradient(135deg, rgba(139, 92, 246, 0.3) 0%, rgba(168, 85, 247, 0.25) 25%, rgba(192, 132, 252, 0.2) 50%, rgba(236, 72, 153, 0.15) 75%, rgba(244, 63, 94, 0.1) 100%);
+            backdrop-filter: blur(30px);
+            border-radius: 25px;
+            border: 2px solid rgba(139, 92, 246, 0.5);
+            box-shadow: 
+                0 15px 50px rgba(0, 0, 0, 0.5),
+                0 0 40px rgba(139, 92, 246, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            position: relative;
             overflow: hidden;
         }
 
-        .progress-fill {
-            background: linear-gradient(45deg, #11998e, #38ef7d);
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
             height: 100%;
-            border-radius: 5px;
+            background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.3), transparent);
+            animation: casinoShimmer 4s infinite;
+        }
+
+        @keyframes casinoShimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .game-title {
+            font-size: 2.6em;
+            font-weight: 900;
+            background: linear-gradient(45deg, #8b5cf6, #a855f7, #c084fc, #ec4899, #f43f5e);
+            background-size: 500% 500%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+            text-shadow: 0 0 30px rgba(139, 92, 246, 0.8);
+            animation: quantumTitle 5s ease-in-out infinite;
+        }
+
+        @keyframes quantumTitle {
+            0%, 100% { 
+                background-position: 0% 50%;
+                filter: drop-shadow(0 0 25px rgba(139, 92, 246, 0.6));
+            }
+            25% { 
+                background-position: 25% 75%;
+                filter: drop-shadow(0 0 30px rgba(168, 85, 247, 0.7));
+            }
+            50% { 
+                background-position: 50% 50%;
+                filter: drop-shadow(0 0 35px rgba(192, 132, 252, 0.8));
+            }
+            75% { 
+                background-position: 75% 25%;
+                filter: drop-shadow(0 0 30px rgba(236, 72, 153, 0.7));
+            }
+        }
+
+        @keyframes titleGlow {
+            0%, 100% { 
+                background-position: 0% 50%;
+                filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.3));
+            }
+            50% { 
+                background-position: 100% 50%;
+                filter: drop-shadow(0 0 30px rgba(255, 215, 0, 0.6));
+            }
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .wallet-section {
+            background: 
+                linear-gradient(135deg, rgba(139, 92, 246, 0.3) 0%, rgba(168, 85, 247, 0.25) 25%, rgba(192, 132, 252, 0.2) 50%, rgba(236, 72, 153, 0.15) 75%, rgba(244, 63, 94, 0.1) 100%);
+            backdrop-filter: blur(30px);
+            padding: 25px 20px;
+            border-radius: 20px;
+            margin-bottom: 25px;
+            text-align: center;
+            border: 2px solid rgba(139, 92, 246, 0.5);
+            box-shadow: 
+                0 10px 40px rgba(0, 0, 0, 0.5),
+                0 0 30px rgba(139, 92, 246, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .wallet-section::before {
+            content: '💰';
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            font-size: 4em;
+            opacity: 0.1;
+            animation: moneyFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes moneyFloat {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(10deg); }
+        }
+
+        .wallet-balance {
+            font-size: 2.2em;
+            font-weight: 800;
+            background: linear-gradient(45deg, #8b5cf6, #a855f7, #c084fc, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 1px;
+            text-shadow: 0 0 25px rgba(139, 92, 246, 0.7);
+        }
+
+        .level-section {
+            background: 
+                linear-gradient(135deg, rgba(139, 92, 246, 0.25) 0%, rgba(168, 85, 247, 0.2) 25%, rgba(192, 132, 252, 0.15) 50%, rgba(236, 72, 153, 0.1) 75%, rgba(244, 63, 94, 0.08) 100%);
+            backdrop-filter: blur(30px);
+            border-radius: 20px;
+            padding: 25px 20px;
+            margin: 25px 0;
+            text-align: center;
+            color: white;
+            border: 2px solid rgba(139, 92, 246, 0.5);
+            box-shadow: 
+                0 10px 40px rgba(0, 0, 0, 0.5),
+                0 0 30px rgba(139, 92, 246, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.15);
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .level-section:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .current-level {
+            font-size: 2.5em;
+            font-weight: 900;
+            background: linear-gradient(45deg, #8b5cf6, #a855f7, #c084fc, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+            text-shadow: 0 0 25px rgba(139, 92, 246, 0.7);
+        }
+
+        .level-reward {
+            font-size: 1.6em;
+            background: linear-gradient(45deg, #00FF00, #32CD32);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+            margin-bottom: 15px;
+            text-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
+        }
+
+        .progress-bar {
+            background: rgba(255, 255, 255, 0.1);
+            height: 8px;
+            border-radius: 4px;
+            margin: 20px 0;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #4CAF50, #66BB6A);
+            height: 100%;
+            border-radius: 4px;
             width: 0%;
-            transition: width 0.5s ease;
+            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
         }
 
         .level-path {
             display: flex;
             justify-content: space-between;
-            margin: 20px 0;
+            margin: 25px 0;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 12px;
+            padding: 25px 20px;
+            background: 
+                linear-gradient(135deg, rgba(255, 215, 0, 0.15) 0%, rgba(255, 20, 147, 0.12) 30%, rgba(0, 255, 255, 0.08) 60%, rgba(255, 0, 255, 0.06) 100%);
+            backdrop-filter: blur(25px);
+            border-radius: 20px;
+            border: 2px solid rgba(255, 215, 0, 0.4);
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.4),
+                0 0 25px rgba(255, 215, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.15);
         }
 
         .level-node {
-            background: rgba(255, 255, 255, 0.2);
-            border: 2px solid rgba(255, 255, 255, 0.3);
+            background: 
+                linear-gradient(135deg, rgba(255, 215, 0, 0.25) 0%, rgba(255, 20, 147, 0.2) 30%, rgba(0, 255, 255, 0.15) 60%, rgba(255, 0, 255, 0.1) 100%);
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(255, 215, 0, 0.5);
             border-radius: 50%;
-            width: 50px;
-            height: 50px;
+            width: 65px;
+            height: 65px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: bold;
-            color: white;
+            font-weight: 800;
+            color: #FFD700;
             font-size: 0.9em;
             flex-direction: column;
             cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 
+                0 4px 16px rgba(0, 0, 0, 0.3),
+                0 0 12px rgba(255, 215, 0, 0.4);
+        }
+
+        .level-node::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .level-node:hover::before {
+            opacity: 1;
         }
 
         .level-node.completed {
-            background: linear-gradient(45deg, #11998e, #38ef7d);
-            border-color: #38ef7d;
-            box-shadow: 0 0 15px rgba(56, 239, 125, 0.5);
+            background: 
+                linear-gradient(135deg, rgba(0, 255, 0, 0.3) 0%, rgba(50, 205, 50, 0.2) 50%, rgba(144, 238, 144, 0.1) 100%);
+            border-color: #00FF00;
+            transform: scale(1.05);
+            box-shadow: 
+                0 8px 24px rgba(0, 255, 0, 0.4),
+                0 0 15px rgba(0, 255, 0, 0.3);
         }
 
         .level-node.current {
-            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
-            border-color: #ff6b6b;
-            animation: currentLevelPulse 2s infinite;
-            box-shadow: 0 0 20px rgba(255, 107, 107, 0.7);
+            background: 
+                linear-gradient(135deg, rgba(255, 215, 0, 0.4) 0%, rgba(255, 20, 147, 0.3) 50%, rgba(0, 255, 255, 0.2) 100%);
+            border-color: #FFD700;
+            transform: scale(1.15);
+            box-shadow: 
+                0 8px 24px rgba(255, 215, 0, 0.5),
+                0 0 20px rgba(255, 215, 0, 0.4);
+            animation: currentPulse 2s ease-in-out infinite;
         }
 
-        @keyframes currentLevelPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
+        @keyframes currentPulse {
+            0%, 100% { 
+                transform: scale(1.15);
+                box-shadow: 
+                    0 8px 24px rgba(255, 215, 0, 0.5),
+                    0 0 20px rgba(255, 215, 0, 0.4);
+            }
+            50% { 
+                transform: scale(1.2);
+                box-shadow: 
+                    0 12px 32px rgba(255, 215, 0, 0.6),
+                    0 0 30px rgba(255, 215, 0, 0.5);
+            }
+        }
+
+        @keyframes completedPulse {
+            0% { 
+                transform: scale(1.05);
+                box-shadow: 0 8px 24px rgba(76, 175, 80, 0.3);
+            }
+            50% { 
+                transform: scale(1.2);
+                box-shadow: 0 16px 40px rgba(76, 175, 80, 0.5);
+            }
+            100% { 
+                transform: scale(1.05);
+                box-shadow: 0 8px 24px rgba(76, 175, 80, 0.3);
+            }
         }
 
         .level-node.locked {
             opacity: 0.4;
             cursor: not-allowed;
+            background: rgba(158, 158, 158, 0.2);
+            border-color: #9E9E9E;
+        }
+
+        .level-node:hover:not(.locked) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
         }
 
         .game-grid {
@@ -167,166 +467,370 @@
             gap: 8px;
             margin: 20px 0;
             justify-content: center;
+            max-width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
         }
 
-        .grid-2x2 { grid-template-columns: repeat(2, 1fr); }
+        @media (min-width: 480px) {
+            .game-grid {
+                max-width: 450px;
+                gap: 12px;
+                margin: 30px 0;
+                padding: 25px;
+                border-radius: 24px;
+            }
+        }
+
         .grid-3x3 { grid-template-columns: repeat(3, 1fr); }
         .grid-4x4 { grid-template-columns: repeat(4, 1fr); }
         .grid-5x5 { grid-template-columns: repeat(5, 1fr); }
         .grid-6x6 { grid-template-columns: repeat(6, 1fr); }
-        .grid-7x7 { grid-template-columns: repeat(7, 1fr); }
-        .grid-8x8 { grid-template-columns: repeat(8, 1fr); }
 
         .box {
             aspect-ratio: 1;
-            background: linear-gradient(145deg, #8B4513, #A0522D, #CD853F);
-            border: 4px solid #654321;
-            border-radius: 8px;
+            background: 
+                linear-gradient(145deg, #1e1b4b 0%, #312e81 25%, #4338ca 50%, #6366f1 75%, #8b5cf6 100%);
+            border: 3px solid #8b5cf6;
+            border-radius: 15px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5em;
-            font-weight: bold;
-            color: #2F1B14;
-            transition: all 0.3s ease;
+            font-size: 1.2em;
+            font-weight: 700;
+            color: #ffffff;
+            transition: all 0.4s ease;
             box-shadow: 
-                inset 2px 2px 8px rgba(255,255,255,0.3),
-                inset -2px -2px 8px rgba(0,0,0,0.4),
-                0 4px 15px rgba(0,0,0,0.3);
+                inset 0 2px 4px rgba(139, 92, 246, 0.4),
+                inset 0 -2px 4px rgba(0, 0, 0, 0.6),
+                0 6px 12px rgba(0, 0, 0, 0.4),
+                0 0 15px rgba(139, 92, 246, 0.3);
             position: relative;
             overflow: hidden;
-            text-shadow: 1px 1px 2px rgba(255,255,255,0.3);
+            min-height: 60px;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+            flex-direction: column;
+            text-align: center;
+        }
+
+        @media (min-width: 480px) {
+            .box {
+                font-size: 1.1em;
+                min-height: 60px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .box {
+                font-size: 0.95em;
+                min-height: 55px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .box {
+                font-size: 0.85em;
+                min-height: 50px;
+            }
+        }
+
+        .box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                linear-gradient(45deg, transparent 30%, rgba(255, 215, 0, 0.2) 50%, transparent 70%),
+                radial-gradient(circle at 20% 20%, rgba(255, 215, 0, 0.3) 0%, transparent 50%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .box::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            right: 2px;
+            bottom: 2px;
+            border: 1px solid rgba(255, 215, 0, 0.4);
+            border-radius: 8px;
+            pointer-events: none;
+        }
+
+        .box:hover::before {
+            opacity: 1;
         }
 
         .box:hover {
-            transform: translateY(-2px);
+            transform: translateY(-3px) scale(1.08);
             box-shadow: 
-                inset 2px 2px 8px rgba(255,255,255,0.3),
-                inset -2px -2px 8px rgba(0,0,0,0.4),
-                0 8px 25px rgba(0,0,0,0.4);
+                inset 0 2px 4px rgba(139, 92, 246, 0.5),
+                inset 0 -2px 4px rgba(0, 0, 0, 0.4),
+                0 10px 20px rgba(0, 0, 0, 0.5),
+                0 0 25px rgba(139, 92, 246, 0.5);
+            border-color: #a855f7;
+            background: 
+                linear-gradient(145deg, #312e81 0%, #4338ca 25%, #6366f1 50%, #8b5cf6 75%, #a855f7 100%);
         }
 
         .box:active {
-            transform: translateY(0);
+            transform: translateY(1px) scale(0.98);
+            box-shadow: 
+                inset 0 2px 4px rgba(0, 0, 0, 0.3),
+                inset 0 -2px 4px rgba(255, 255, 255, 0.1),
+                0 2px 4px rgba(0, 0, 0, 0.3);
         }
 
         .box.breaking {
-            animation: breakBox 0.6s ease-in-out;
+            animation: breakBox 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
         }
 
         @keyframes breakBox {
-            0% { transform: scale(1) rotate(0deg); }
-            25% { transform: scale(1.1) rotate(-5deg); }
-            50% { transform: scale(0.9) rotate(5deg); }
-            75% { transform: scale(1.05) rotate(-3deg); }
-            100% { transform: scale(1) rotate(0deg); }
+            0% {
+                transform: scale(1) rotate(0deg);
+                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            }
+            25% {
+                transform: scale(1.15) rotate(-8deg);
+                box-shadow: 0 20px 40px rgba(255, 107, 107, 0.4);
+            }
+            50% {
+                transform: scale(0.85) rotate(8deg);
+                box-shadow: 0 15px 30px rgba(255, 107, 107, 0.6);
+            }
+            75% { 
+                transform: scale(1.08) rotate(-4deg);
+                box-shadow: 0 18px 35px rgba(255, 107, 107, 0.5);
+            }
+            100% {
+                transform: scale(1) rotate(0deg);
+                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            }
         }
 
         .box.revealed-win {
-            background: linear-gradient(145deg, #FFD700, #FFA500, #FF8C00);
-            border-color: #FFD700;
-            color: #8B4513;
-            animation: winGlow 2s ease-in-out;
+            background: 
+                linear-gradient(145deg, #4CAF50 0%, #66BB6A 25%, #81C784 50%, #A5D6A7 75%, #C8E6C9 100%);
+            border-color: #2E7D32;
+            color: white;
+            animation: winExplosion 0.8s ease-out;
+            box-shadow: 
+                inset 0 2px 4px rgba(255, 255, 255, 0.4),
+                inset 0 -2px 4px rgba(0, 0, 0, 0.2),
+                0 0 20px rgba(76, 175, 80, 0.6);
         }
 
-        @keyframes winGlow {
-            0%, 100% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.5); }
-            50% { box-shadow: 0 0 40px rgba(255, 215, 0, 0.8); }
+        @keyframes winExplosion {
+            0% { 
+                transform: scale(1);
+                box-shadow: 
+                    inset 0 2px 4px rgba(255, 255, 255, 0.4),
+                    inset 0 -2px 4px rgba(0, 0, 0, 0.2),
+                    0 0 20px rgba(76, 175, 80, 0.6);
+            }
+            50% {
+                transform: scale(1.3);
+                box-shadow: 
+                    inset 0 2px 4px rgba(255, 255, 255, 0.4),
+                    inset 0 -2px 4px rgba(0, 0, 0, 0.2),
+                    0 0 40px rgba(76, 175, 80, 0.8);
+            }
+            100% {
+                transform: scale(1);
+                box-shadow: 
+                    inset 0 2px 4px rgba(255, 255, 255, 0.4),
+                    inset 0 -2px 4px rgba(0, 0, 0, 0.2),
+                    0 0 20px rgba(76, 175, 80, 0.6);
+            }
         }
 
         .box.revealed-empty {
-            background: linear-gradient(145deg, #808080, #A9A9A9, #C0C0C0);
-            border-color: #696969;
-            color: #2F2F2F;
+            background: 
+                linear-gradient(145deg, #D32F2F 0%, #F44336 25%, #EF5350 50%, #E57373 75%, #FFCDD2 100%);
+            border-color: #B71C1C;
+            color: white;
+            opacity: 0.8;
+            animation: blastEffect 0.6s ease-out;
+            box-shadow: 
+                inset 0 2px 4px rgba(255, 255, 255, 0.2),
+                inset 0 -2px 4px rgba(0, 0, 0, 0.4),
+                0 0 15px rgba(244, 67, 54, 0.5);
+        }
+
+        @keyframes blastEffect {
+            0% { 
+                transform: scale(1);
+                box-shadow: 
+                    inset 0 2px 4px rgba(255, 255, 255, 0.2),
+                    inset 0 -2px 4px rgba(0, 0, 0, 0.4),
+                    0 0 15px rgba(244, 67, 54, 0.5);
+            }
+            50% { 
+                transform: scale(1.2);
+                box-shadow: 
+                    inset 0 2px 4px rgba(255, 255, 255, 0.2),
+                    inset 0 -2px 4px rgba(0, 0, 0, 0.4),
+                    0 0 25px rgba(244, 67, 54, 0.7);
+            }
+            100% {
+                transform: scale(1);
+                box-shadow: 
+                    inset 0 2px 4px rgba(255, 255, 255, 0.2),
+                    inset 0 -2px 4px rgba(0, 0, 0, 0.4),
+                    0 0 15px rgba(244, 67, 54, 0.5);
+            }
         }
 
         .box.revealed-special {
-            background: linear-gradient(145deg, #FF69B4, #FF1493, #DC143C);
-            border-color: #FF69B4;
+            background: rgba(33, 150, 243, 0.2);
+            border-color: #2196F3;
             color: white;
-            animation: specialGlow 2s ease-in-out;
+            animation: specialPulse 1.5s ease-in-out;
         }
 
-        @keyframes specialGlow {
-            0%, 100% { box-shadow: 0 0 20px rgba(255, 105, 180, 0.5); }
-            50% { box-shadow: 0 0 40px rgba(255, 105, 180, 0.8); }
+        @keyframes specialPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
         }
 
         .play-button {
             width: 100%;
             padding: 20px;
-            font-size: 1.5em;
-            font-weight: bold;
-            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
-            color: white;
+            font-size: 1.4em;
+            font-weight: 800;
+            background: 
+                linear-gradient(145deg, #8b5cf6 0%, #a855f7 25%, #c084fc 50%, #ec4899 75%, #f43f5e 100%);
+            color: #ffffff;
             border: none;
-            border-radius: 15px;
+            border-radius: 18px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 8px 25px rgba(238, 90, 36, 0.3);
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            transition: all 0.4s ease;
+            box-shadow: 
+                0 8px 16px rgba(0, 0, 0, 0.4),
+                0 0 25px rgba(139, 92, 246, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            letter-spacing: 2px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            position: relative;
+            overflow: hidden;
         }
 
+
+
         .play-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 35px rgba(238, 90, 36, 0.4);
+            transform: translateY(-4px);
+            box-shadow: 
+                0 12px 24px rgba(0, 0, 0, 0.5),
+                0 0 35px rgba(139, 92, 246, 0.7),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4);
+            background: 
+                linear-gradient(145deg, #a855f7 0%, #c084fc 25%, #ec4899 50%, #f43f5e 75%, #8b5cf6 100%);
         }
 
         .play-button:active {
-            transform: translateY(0);
+            transform: translateY(1px);
+            box-shadow: 
+                0 2px 4px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(0, 0, 0, 0.2);
         }
 
         .play-button:disabled {
-            opacity: 0.6;
+                opacity: 0.5;
             cursor: not-allowed;
             transform: none;
+            background: linear-gradient(135deg, #95a5a6, #7f8c8d);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
 
         .stats-section {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 20px;
-            margin: 20px 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 25px;
+            margin: 25px 0;
             color: white;
-            border: 2px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
         }
 
         .stats-section h3 {
             text-align: center;
-            margin-bottom: 15px;
-            color: #ffd700;
+            margin-bottom: 20px;
+            color: #00d4ff;
+            font-family: 'Orbitron', monospace;
+            font-size: 1.3em;
+            font-weight: 700;
+            text-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
+            letter-spacing: 1px;
         }
 
         .stats-section p {
-            margin: 8px 0;
-            font-size: 0.9em;
+            margin: 10px 0;
+            font-size: 0.95em;
             opacity: 0.9;
+            padding: 8px 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            border-left: 3px solid #00d4ff;
+            transition: all 0.3s ease;
+        }
+
+        .stats-section p:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(5px);
         }
 
         .live-players {
             font-size: 1.1em;
-            color: #ffd700;
-            font-weight: bold;
+            color: white;
+            font-weight: 600;
+            opacity: 0.9;
         }
 
         .level-info {
             font-size: 1.1em;
             margin-top: 15px;
-            color: #ffd700;
+            color: white;
+            font-weight: 500;
+            opacity: 0.9;
         }
 
         .win-amount {
-            font-size: 2.5em;
-            font-weight: bold;
-            color: #ffd700;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            font-size: 3em;
+            font-weight: 700;
+            color: #4CAF50;
             margin: 20px 0;
+            letter-spacing: -0.5px;
         }
 
-        /* Modal Styles */
-        .payment-modal, .result-modal {
+        @keyframes winAmountGlow {
+            0%, 100% { 
+                background-position: 0% 50%;
+                transform: scale(1);
+            }
+            50% { 
+                background-position: 100% 50%;
+                transform: scale(1.05);
+            }
+        }
+
+        /* Quantum Modal Styles */
+        .payment-modal, .result-modal, .withdrawal-modal {
             display: none;
             position: fixed;
             z-index: 1000;
@@ -334,65 +838,219 @@
             top: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0,0,0,0.8);
-            backdrop-filter: blur(5px);
+            background: 
+                linear-gradient(135deg, rgba(0, 0, 0, 0.9) 0%, rgba(30, 27, 75, 0.8) 50%, rgba(139, 92, 246, 0.3) 100%);
+            backdrop-filter: blur(30px);
+            animation: quantumModalFadeIn 0.5s ease-out;
+            overflow-y: auto;
+            padding: 20px 0;
+        }
+
+        @keyframes quantumModalFadeIn {
+            from {
+                opacity: 0;
+                backdrop-filter: blur(0px);
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                backdrop-filter: blur(30px);
+                transform: scale(1);
+            }
         }
 
         .modal-content, .result-content {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: 
+                linear-gradient(135deg, rgba(139, 92, 246, 0.3) 0%, rgba(168, 85, 247, 0.25) 25%, rgba(192, 132, 252, 0.2) 50%, rgba(236, 72, 153, 0.15) 75%, rgba(244, 63, 94, 0.1) 100%);
+            backdrop-filter: blur(35px);
             margin: 5% auto;
-            padding: 30px;
-            border-radius: 20px;
+            padding: 35px 25px;
+            border-radius: 25px;
             width: 90%;
-            max-width: 400px;
+            max-width: 480px;
+            max-height: 80vh;
             text-align: center;
             color: white;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-            border: 2px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 
+                0 30px 100px rgba(0, 0, 0, 0.6),
+                0 0 50px rgba(139, 92, 246, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(139, 92, 246, 0.5);
+            position: relative;
+            overflow-y: auto;
+            animation: quantumModalSlideIn 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes quantumModalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .modal-content::before, .result-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #8b5cf6, #a855f7, #c084fc, #ec4899, #f43f5e);
+            animation: quantumBorder 3s ease-in-out infinite;
+        }
+
+        @keyframes quantumBorder {
+            0%, 100% { 
+                background-position: 0% 50%;
+                filter: hue-rotate(0deg);
+            }
+            50% { 
+                background-position: 100% 50%;
+                filter: hue-rotate(180deg);
+            }
         }
 
         .close-btn {
-            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            background: 
+                linear-gradient(135deg, rgba(139, 92, 246, 0.3) 0%, rgba(168, 85, 247, 0.25) 50%, rgba(192, 132, 252, 0.2) 100%);
+            backdrop-filter: blur(15px);
             color: white;
-            padding: 12px 24px;
-            border: none;
-            border-radius: 10px;
+            padding: 18px 35px;
+            border: 2px solid rgba(139, 92, 246, 0.5);
+            border-radius: 15px;
             cursor: pointer;
-            font-size: 1.1em;
+            font-size: 1.2em;
+            font-weight: 700;
             margin-top: 20px;
-            transition: all 0.3s ease;
+            transition: all 0.4s ease;
+            box-shadow: 
+                0 10px 30px rgba(0, 0, 0, 0.3),
+                0 0 20px rgba(139, 92, 246, 0.4);
+            letter-spacing: 1px;
+        }
+
+        .modal-close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: 
+                linear-gradient(135deg, rgba(244, 63, 94, 0.3) 0%, rgba(236, 72, 153, 0.25) 50%, rgba(192, 132, 252, 0.2) 100%);
+            backdrop-filter: blur(15px);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border: 2px solid rgba(244, 63, 94, 0.5);
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5em;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.4s ease;
+            box-shadow: 
+                0 8px 25px rgba(0, 0, 0, 0.3),
+                0 0 15px rgba(244, 63, 94, 0.4);
+            z-index: 10;
+        }
+
+        .modal-close-btn:hover {
+            transform: scale(1.1) rotate(90deg);
+            box-shadow: 
+                0 12px 35px rgba(244, 63, 94, 0.6),
+                0 0 25px rgba(244, 63, 94, 0.5);
+            background: 
+                linear-gradient(135deg, rgba(244, 63, 94, 0.4) 0%, rgba(236, 72, 153, 0.3) 50%, rgba(192, 132, 252, 0.25) 100%);
         }
 
         .close-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(238, 90, 36, 0.3);
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 
+                0 15px 40px rgba(139, 92, 246, 0.6),
+                0 0 30px rgba(139, 92, 246, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            background: 
+                linear-gradient(135deg, rgba(168, 85, 247, 0.4) 0%, rgba(192, 132, 252, 0.3) 50%, rgba(236, 72, 153, 0.25) 100%);
         }
 
         .upload-btn {
-            background: linear-gradient(45deg, #11998e, #38ef7d);
+            background: 
+                linear-gradient(135deg, rgba(139, 92, 246, 0.3) 0%, rgba(168, 85, 247, 0.25) 50%, rgba(192, 132, 252, 0.2) 100%);
+            backdrop-filter: blur(15px);
             color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 8px;
+            padding: 18px 32px;
+            border: 2px solid rgba(139, 92, 246, 0.5);
+            border-radius: 15px;
             cursor: pointer;
-            font-size: 1em;
-            margin: 5px;
-            transition: all 0.3s ease;
+            font-size: 1.1em;
+            font-weight: 700;
+            margin: 8px;
+            transition: all 0.4s ease;
+            box-shadow: 
+                0 8px 25px rgba(0, 0, 0, 0.3),
+                0 0 15px rgba(139, 92, 246, 0.4);
+            letter-spacing: 0.5px;
+            min-width: 200px;
         }
 
         .upload-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(56, 239, 125, 0.3);
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 
+                0 12px 35px rgba(139, 92, 246, 0.6),
+                0 0 25px rgba(139, 92, 246, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            background: 
+                linear-gradient(135deg, rgba(168, 85, 247, 0.4) 0%, rgba(192, 132, 252, 0.3) 50%, rgba(236, 72, 153, 0.25) 100%);
         }
 
-        .qr-code {
-            background: white;
-            color: #333;
-            padding: 20px;
-            border-radius: 10px;
-            margin: 20px 0;
-            font-weight: bold;
-            border: 2px dashed #ddd;
+                .qr-code {
+            background: 
+                linear-gradient(135deg, rgba(139, 92, 246, 0.25) 0%, rgba(168, 85, 247, 0.2) 50%, rgba(192, 132, 252, 0.15) 100%);
+            backdrop-filter: blur(20px);
+            color: white;
+            padding: 35px 25px;
+            border-radius: 20px;
+            margin: 30px 0;
+            font-weight: 700;
+            border: 2px dashed rgba(139, 92, 246, 0.6);
+            box-shadow: 
+                0 10px 30px rgba(0, 0, 0, 0.4),
+                0 0 20px rgba(139, 92, 246, 0.4);
+            position: relative;
+            overflow: hidden;
+            font-size: 1.1em;
+            letter-spacing: 1px;
+            text-align: center;
+        }
+
+        .qr-code::before {
+            content: '📱';
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            font-size: 2em;
+            opacity: 0.3;
+            animation: qrFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes qrFloat {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-5px) rotate(5deg); }
         }
 
         .file-input {
@@ -400,78 +1058,349 @@
         }
 
         .upload-section {
-            margin: 20px 0;
+            margin: 30px 0;
+            padding: 25px;
+            background: 
+                linear-gradient(135deg, rgba(139, 92, 246, 0.2) 0%, rgba(168, 85, 247, 0.15) 50%, rgba(192, 132, 252, 0.1) 100%);
+            backdrop-filter: blur(15px);
+            border-radius: 15px;
+            border: 1px solid rgba(139, 92, 246, 0.3);
+        }
+
+        .upload-section p {
+            color: #c084fc;
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        /* Bet Selection Styles */
+        .bet-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 30px;
+            margin: 30px 0;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .bet-label {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: white;
+            text-align: center;
+            margin-bottom: 20px;
+            letter-spacing: -0.5px;
+        }
+
+        .bet-input-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .bet-input {
+            width: 200px;
+            padding: 15px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1.2em;
+            font-weight: 600;
+            text-align: center;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .bet-input:focus {
+            outline: none;
+            border-color: #4CAF50;
+            box-shadow: 0 0 20px rgba(76, 175, 80, 0.3);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .bet-input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .bet-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+                justify-content: center;
+        }
+
+        .bet-btn {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 12px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .bet-btn:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 
+                0 8px 25px rgba(102, 126, 234, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        }
+
+        .bet-btn.active {
+            background: rgba(76, 175, 80, 0.2);
+            border-color: #4CAF50;
+            box-shadow: 0 8px 24px rgba(76, 175, 80, 0.3);
+        }
+
+        .potential-win {
+            text-align: center;
+            margin-top: 15px;
+                font-size: 1.1em;
+            color: #4CAF50;
+            font-weight: 600;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 18px;
+            font-family: 'Exo 2', sans-serif;
+                font-size: 1.1em;
+            font-weight: 600;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            letter-spacing: 1px;
+        }
+
+        .action-btn.add-balance {
+            background: rgba(76, 175, 80, 0.2);
+            color: white;
+            border: 1px solid rgba(76, 175, 80, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .action-btn.withdraw {
+            background: rgba(33, 150, 243, 0.2);
+            color: white;
+            border: 1px solid rgba(33, 150, 243, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .action-btn.add-balance:hover {
+            background: rgba(76, 175, 80, 0.3);
+        }
+
+        .action-btn.withdraw:hover {
+            background: rgba(33, 150, 243, 0.3);
         }
 
         /* Responsive Design */
         @media (max-width: 600px) {
             .game-container {
-                padding: 5px;
+                padding: 15px 10px;
             }
 
             .game-title {
-                font-size: 2em;
+                font-size: 2.2em;
             }
 
             .wallet-balance {
-                font-size: 1.5em;
+                font-size: 1.6em;
             }
 
             .current-level {
-                font-size: 1.8em;
+                font-size: 1.9em;
             }
 
             .level-reward {
-                font-size: 1.3em;
+                font-size: 1.4em;
             }
 
             .play-button {
-                font-size: 1.3em;
-                padding: 15px;
+                font-size: 1.2em;
+                padding: 18px;
             }
 
             .level-node {
-                width: 40px;
-                height: 40px;
-                font-size: 0.8em;
+                width: 50px;
+                height: 50px;
+                font-size: 0.85em;
             }
 
             .box {
+                font-size: 0.95em;
+                min-height: 55px;
+            }
+            
+            .game-grid {
+                max-width: 380px;
+                gap: 6px;
+                padding: 15px;
+            }
+
+            .stats-section {
+                padding: 20px;
+            }
+
+            .stats-section h3 {
                 font-size: 1.2em;
+            }
+
+            .bet-section {
+                padding: 20px;
+            }
+
+            .bet-input {
+                width: 180px;
+                padding: 12px;
+                font-size: 1.1em;
+            }
+
+            .bet-buttons {
+                gap: 8px;
+            }
+
+            .bet-btn {
+                padding: 8px 16px;
+                font-size: 0.9em;
             }
         }
 
         @media (max-width: 400px) {
             .game-title {
-                font-size: 1.8em;
+                font-size: 1.9em;
             }
 
             .wallet-balance {
-                font-size: 1.3em;
+                font-size: 1.4em;
             }
 
             .current-level {
-                font-size: 1.5em;
+                font-size: 1.6em;
             }
 
             .level-reward {
-                font-size: 1.1em;
+                font-size: 1.2em;
             }
 
             .play-button {
                 font-size: 1.1em;
-                padding: 12px;
+                padding: 15px;
             }
 
             .level-node {
-                width: 35px;
-                height: 35px;
-                font-size: 0.7em;
+                width: 45px;
+                height: 45px;
+                font-size: 0.8em;
             }
 
             .box {
+                font-size: 0.85em;
+                min-height: 50px;
+            }
+
+            .game-grid {
+                max-width: 320px;
+                gap: 5px;
+                padding: 12px;
+            }
+
+            .stats-section {
+                padding: 15px;
+            }
+
+            .stats-section h3 {
+                font-size: 1.1em;
+            }
+
+            .bet-section {
+                padding: 15px;
+            }
+
+            .bet-input {
+                width: 160px;
+                padding: 10px;
                 font-size: 1em;
             }
+
+            .bet-buttons {
+                gap: 6px;
+            }
+
+            .bet-btn {
+                padding: 6px 12px;
+                font-size: 0.8em;
+            }
+
+            .bet-label {
+                font-size: 1.1em;
+            }
+
+            .potential-win {
+                font-size: 1em;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .action-btn {
+                padding: 15px;
+                font-size: 1em;
+            }
+        }
+
+        /* Custom Scrollbar Styles */
+        .modal-content::-webkit-scrollbar,
+        .result-content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .modal-content::-webkit-scrollbar-track,
+        .result-content::-webkit-scrollbar-track {
+            background: rgba(139, 92, 246, 0.1);
+            border-radius: 10px;
+        }
+
+        .modal-content::-webkit-scrollbar-thumb,
+        .result-content::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #8b5cf6, #a855f7, #c084fc);
+            border-radius: 10px;
+            border: 1px solid rgba(139, 92, 246, 0.3);
+        }
+
+        .modal-content::-webkit-scrollbar-thumb:hover,
+        .result-content::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #a855f7, #c084fc, #ec4899);
+        }
+
+        /* Firefox Scrollbar */
+        .modal-content,
+        .result-content {
+            scrollbar-width: thin;
+            scrollbar-color: #8b5cf6 rgba(139, 92, 246, 0.1);
         }
 
         .pulse {
@@ -505,134 +1434,140 @@
     <div class="game-container">
         <!-- Header -->
         <div class="header">
-            <h1 class="game-title">🎯 Lucky Box Game</h1>
-            <div class="live-players">🔴 LIVE: 247 players online</div>
+            <h1 class="game-title">⚛️ QUANTUM BOX SMASHER ⚛️</h1>
+            <div class="live-players">🌌 LIVE: 2,847 quantum smashers</div>
         </div>
 
         <!-- Wallet Section -->
         <div class="wallet-section">
-            <div class="wallet-balance">💰 Balance: ₹<span id="walletAmount">500</span></div>
+            <div class="wallet-balance">⚛️ Quantum Energy: ₹<span id="walletAmount">500</span></div>
         </div>
 
         <!-- Level Section -->
         <div class="level-section">
-            <div class="current-level">Level <span id="currentLevel">1</span></div>
-            <div class="level-reward">Win: <span id="currentReward">1.5x</span> (₹<span id="currentAmount">300</span>)</div>
+            <div class="current-level">Quantum Level <span id="currentLevel">1</span></div>
+            <div class="level-reward">Quantum Win: <span id="currentReward">2x</span> (₹<span id="currentAmount">400</span>)</div>
             <div class="progress-bar">
                 <div class="progress-fill" id="progressFill"></div>
             </div>
             <div class="level-info" id="levelInfo">
-                🎯 Find the special box in this 2×2 grid to win 1.5x and unlock Level 2!
+                ⚛️ Find the quantum box in this 3-box grid to smash and win 2x quantum energy!
             </div>
         </div>
 
         <!-- Level Path -->
         <div class="level-path" id="levelPath">
-            <div class="level-node current" data-level="1">
+            <div class="level-node" data-level="1">
                 <div>L1</div>
-                <small>1.5x</small>
-            </div>
-            <div class="level-node locked" data-level="2">
-                <div>L2</div>
                 <small>2x</small>
             </div>
-            <div class="level-node locked" data-level="3">
-                <div>L3</div>
+            <div class="level-node" data-level="2">
+                <div>L2</div>
                 <small>3x</small>
             </div>
-            <div class="level-node locked" data-level="4">
-                <div>L4</div>
+            <div class="level-node" data-level="3">
+                <div>L3</div>
                 <small>5x</small>
             </div>
-            <div class="level-node locked" data-level="5">
-                <div>L5</div>
-                <small>8x</small>
-            </div>
-            <div class="level-node locked" data-level="6">
-                <div>L6</div>
-                <small>12x</small>
-            </div>
-            <div class="level-node locked" data-level="7">
-                <div>L7</div>
-                <small>20x</small>
+            <div class="level-node" data-level="4">
+                <div>L4</div>
+                <small>10x</small>
             </div>
         </div>
 
-        <!-- Stats Section -->
-        <div class="stats-section">
-            <h3>🏆 Recent Level Completions</h3>
-            <div id="recentWinners">
-                <p>🎉 Rahul completed Level 4 (8x) - 2 min ago</p>
-                <p>💰 Priya completed Level 2 (3x) - 5 min ago</p>
-                <p>🔥 Amit completed Level 5 (12x) - 8 min ago</p>
-            </div>
-        </div>
+
 
         <!-- Game Grid -->
-        <div class="game-grid grid-2x2" id="gameGrid">
+        <div class="game-grid grid-3x3" id="gameGrid">
             <!-- Boxes will be generated by JavaScript -->
+        </div>
+
+        <!-- Bet Selection Section -->
+        <div class="bet-section">
+            <div class="bet-label">⚛️ Select Your Quantum Bet:</div>
+            <div class="bet-input-container">
+                <input type="number" id="betAmount" class="bet-input" value="200" min="200" max="10000" step="100">
+                <div class="bet-buttons">
+                    <button class="bet-btn" onclick="setBetAmount(200)">₹200</button>
+                    <button class="bet-btn" onclick="setBetAmount(500)">₹500</button>
+                    <button class="bet-btn" onclick="setBetAmount(1000)">₹1000</button>
+                    <button class="bet-btn" onclick="setBetAmount(2000)">₹2000</button>
+                </div>
+            </div>
+            <div class="potential-win" id="potentialWin">
+                ⚛️ Quantum Potential: ₹400 (2x)
+            </div>
         </div>
 
         <!-- Play Button -->
         <button class="play-button pulse" id="playButton">
-            🎲 PLAY LEVEL 1 - ₹200 🎲
+            ⚛️ QUANTUM SMASH LEVEL 1 - ₹200 ⚛️
         </button>
 
-        <!-- Add Balance Button -->
-        <button class="play-button" style="background: linear-gradient(45deg, #11998e, #38ef7d); margin-top: 10px;" onclick="showPaymentModal()">
-            💳 Add Balance
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+                        <button class="action-btn add-balance" onclick="showPaymentModal()">
+            ⚛️ Add Quantum Energy
         </button>
+            <button class="action-btn withdraw" onclick="showWithdrawalModal()">
+                🌌 Withdraw Quantum Energy
+        </button>
+        </div>
     </div>
 
     <!-- Payment Modal -->
     <div class="payment-modal" id="paymentModal">
         <div class="modal-content">
-            <h2>💳 Add Money to Wallet</h2>
+            <button class="modal-close-btn" onclick="closePaymentModal()">✕</button>
+            <h2 style="font-size: 2.2em; font-weight: 900; background: linear-gradient(45deg, #8b5cf6, #a855f7, #c084fc, #ec4899); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 25px; text-shadow: 0 0 25px rgba(139, 92, 246, 0.6);">⚛️ QUANTUM RECHARGE ⚛️</h2>
             
             <!-- Amount Selection Step -->
             <div id="amountStep">
-                <p style="margin-bottom: 15px; font-size: 1.1em;">How much do you want to add?</p>
-                <div style="margin: 20px 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;">
-                    <button class="upload-btn" onclick="selectAmount(200)">₹200</button>
-                    <button class="upload-btn" onclick="selectAmount(500)">₹500</button>
-                    <button class="upload-btn" onclick="selectAmount(1000)">₹1000</button>
-                    <button class="upload-btn" onclick="selectAmount(2000)">₹2000</button>
+                <p style="margin-bottom: 25px; font-size: 1.3em; font-weight: 600; color: #c084fc;">How much quantum energy do you want to add?</p>
+                <div style="margin: 30px 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 15px;">
+                    <button class="upload-btn" onclick="selectAmount(200)">⚡ ₹200</button>
+                    <button class="upload-btn" onclick="selectAmount(500)">⚡ ₹500</button>
+                    <button class="upload-btn" onclick="selectAmount(1000)">⚡ ₹1000</button>
+                    <button class="upload-btn" onclick="selectAmount(2000)">⚡ ₹2000</button>
                 </div>
-                <div style="margin: 20px 0;">
-                    <input type="number" id="customAmount" placeholder="Enter custom amount" style="padding: 12px; border-radius: 10px; border: 2px solid #ddd; width: 200px; text-align: center; font-size: 16px; margin-bottom: 10px;">
+                <div style="margin: 30px 0;">
+                    <input type="number" id="customAmount" placeholder="Enter custom quantum amount" style="padding: 15px; border-radius: 15px; border: 2px solid rgba(139, 92, 246, 0.5); background: rgba(139, 92, 246, 0.1); color: white; width: 220px; text-align: center; font-size: 16px; margin-bottom: 20px; backdrop-filter: blur(10px); font-weight: 600;">
                     <br>
-                    <button class="upload-btn" onclick="selectCustomAmount()">Add Custom Amount</button>
+                    <button class="upload-btn" onclick="selectCustomAmount()">⚛️ Add Custom Quantum Energy</button>
                 </div>
             </div>
 
             <!-- Payment Step -->
             <div id="paymentStep" style="display: none;">
-                <p style="margin-bottom: 15px; font-size: 1.1em;">Pay <strong id="selectedAmount">₹200</strong> using UPI</p>
+                <p style="margin-bottom: 25px; font-size: 1.3em; font-weight: 600; color: #c084fc;">Transfer <strong id="selectedAmount" style="color: #ec4899;">₹200</strong> quantum energy</p>
                 
                 <div class="qr-code">
-                    📱 UPI QR CODE<br>
-                    Pay <span id="qrAmount">₹200</span> Here
+                    <div style="font-size: 1.2em; font-weight: 700; margin-bottom: 15px;">📱 QUANTUM UPI QR CODE</div>
+                    <img src="qr.jpg" alt="Quantum UPI QR Code" style="width: 150px; height: 150px; margin: 15px auto; border-radius: 10px; border: 2px solid rgba(139, 92, 246, 0.5); box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);">
+                    <div style="font-size: 1.1em; margin-bottom: 15px;">Transfer <span id="qrAmount" style="color: #ec4899; font-weight: 800;">₹200</span> Here</div>
+                    <div style="font-size: 0.9em; color: #a855f7;">UPI ID: <span style="color: #c084fc; font-weight: 600;">game@paytm</span></div>
                 </div>
-                
-                <p style="margin: 15px 0;"><strong>UPI ID:</strong> game@paytm</p>
                 
                 <div class="upload-section">
-                    <p style="margin-bottom: 10px;">Upload payment screenshot:</p>
-                    <input type="file" class="file-input" id="screenshotFile" accept="image/*">
-                    <label for="screenshotFile" class="upload-btn">📸 Choose Screenshot</label>
-                    <button class="upload-btn" onclick="uploadScreenshot()">✅ Submit Payment</button>
+                    <p style="margin-bottom: 20px;">📸 Upload quantum transfer proof:</p>
+                    <div style="display: flex; flex-direction: column; gap: 15px; align-items: center;">
+                        <input type="file" class="file-input" id="screenshotFile" accept="image/*">
+                        <label for="screenshotFile" class="upload-btn">📸 Choose Quantum Screenshot</label>
+                        <button class="upload-btn" onclick="uploadScreenshot()">✅ Submit Quantum Transfer</button>
+                    </div>
                 </div>
                 
-                <button class="upload-btn" onclick="goBackToAmount()" style="background: linear-gradient(45deg, #666, #888); margin-top: 10px;">← Back to Amount</button>
+                <button class="upload-btn" onclick="goBackToAmount()" style="background: linear-gradient(45deg, rgba(139, 92, 246, 0.2), rgba(168, 85, 247, 0.15)); margin-top: 20px;">← Back to Amount</button>
             </div>
             
-            <button class="close-btn" onclick="closePaymentModal()">Close</button>
+            <button class="close-btn" onclick="closePaymentModal()">Close Quantum Portal</button>
         </div>
     </div>
 
     <!-- Result Modal -->
     <div class="result-modal" id="resultModal">
         <div class="result-content">
+            <button class="modal-close-btn" onclick="closeResultModal()">✕</button>
             <div id="resultContent">
                 <!-- Result content will be inserted here -->
             </div>
@@ -640,16 +1575,53 @@
         </div>
     </div>
 
+    <!-- Withdrawal Modal -->
+    <div class="withdrawal-modal" id="withdrawalModal">
+        <div class="modal-content">
+            <button class="modal-close-btn" onclick="closeWithdrawalModal()">✕</button>
+            <h2 style="font-size: 2.2em; font-weight: 900; background: linear-gradient(45deg, #8b5cf6, #a855f7, #c084fc, #ec4899); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 20px; text-shadow: 0 0 25px rgba(139, 92, 246, 0.6);">🌌 QUANTUM WITHDRAWAL 🌌</h2>
+            
+            <!-- Amount Selection Step -->
+            <div id="withdrawalAmountStep">
+                <p style="margin-bottom: 20px; font-size: 1.3em; font-weight: 600; color: #c084fc;">How much quantum energy do you want to withdraw?</p>
+                <div style="margin: 25px 0;">
+                    <input type="number" id="withdrawalAmount" placeholder="Enter quantum withdrawal amount" style="padding: 15px; border-radius: 15px; border: 2px solid rgba(139, 92, 246, 0.5); background: rgba(139, 92, 246, 0.1); color: white; width: 220px; text-align: center; font-size: 16px; margin-bottom: 15px; backdrop-filter: blur(10px);">
+                    <br>
+                    <p style="font-size: 1em; color: #a855f7; font-weight: 600;">Available Quantum Energy: ₹<span id="availableBalance" style="color: #ec4899; font-weight: 800;">500</span></p>
+                </div>
+                <div style="margin: 25px 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 12px;">
+                    <button class="upload-btn" onclick="setWithdrawalAmount(100)">⚡ ₹100</button>
+                    <button class="upload-btn" onclick="setWithdrawalAmount(200)">⚡ ₹200</button>
+                    <button class="upload-btn" onclick="setWithdrawalAmount(500)">⚡ ₹500</button>
+                    <button class="upload-btn" onclick="setWithdrawalAmount(1000)">⚡ ₹1000</button>
+                </div>
+            </div>
+
+            <!-- Details Step -->
+            <div id="withdrawalDetailsStep" style="display: none;">
+                <p style="margin-bottom: 20px; font-size: 1.3em; font-weight: 600; color: #c084fc;">Withdraw <strong id="withdrawalSelectedAmount" style="color: #ec4899;">₹200</strong> quantum energy</p>
+                
+                <div style="margin: 25px 0;">
+                    <input type="text" id="upiId" placeholder="Enter your quantum UPI ID" style="padding: 15px; border-radius: 15px; border: 2px solid rgba(139, 92, 246, 0.5); background: rgba(139, 92, 246, 0.1); color: white; width: 100%; text-align: center; font-size: 16px; margin-bottom: 15px; backdrop-filter: blur(10px);">
+                    <input type="text" id="playerName" placeholder="Enter your quantum name" style="padding: 15px; border-radius: 15px; border: 2px solid rgba(139, 92, 246, 0.5); background: rgba(139, 92, 246, 0.1); color: white; width: 100%; text-align: center; font-size: 16px; margin-bottom: 15px; backdrop-filter: blur(10px);">
+                    <input type="tel" id="playerPhone" placeholder="Enter your quantum phone number" style="padding: 15px; border-radius: 15px; border: 2px solid rgba(139, 92, 246, 0.5); background: rgba(139, 92, 246, 0.1); color: white; width: 100%; text-align: center; font-size: 16px; margin-bottom: 15px; backdrop-filter: blur(10px);">
+                </div>
+                
+                <button class="upload-btn" onclick="submitWithdrawal()">✅ Submit Quantum Withdrawal</button>
+                <button class="upload-btn" onclick="goBackToWithdrawalAmount()" style="background: linear-gradient(45deg, rgba(139, 92, 246, 0.2), rgba(168, 85, 247, 0.15)); margin-top: 15px;">← Back to Amount</button>
+            </div>
+            
+            <button class="close-btn" onclick="closeWithdrawalModal()">Close Quantum Portal</button>
+        </div>
+    </div>
+
     <script>
         // Game Configuration
         const LEVELS = [
-            { level: 1, grid: 2, multiplier: 1.5, specialBoxes: 1, winChance: 0.40 },
-            { level: 2, grid: 3, multiplier: 2, specialBoxes: 1, winChance: 0.30 },
-            { level: 3, grid: 4, multiplier: 3, specialBoxes: 1, winChance: 0.22 },
-            { level: 4, grid: 5, multiplier: 5, specialBoxes: 1, winChance: 0.15 },
-            { level: 5, grid: 6, multiplier: 8, specialBoxes: 1, winChance: 0.10 },
-            { level: 6, grid: 7, multiplier: 12, specialBoxes: 1, winChance: 0.08 },
-            { level: 7, grid: 8, multiplier: 20, specialBoxes: 1, winChance: 0.05 }
+            { level: 1, grid: 3, multiplier: 2, specialBoxes: 1, winChance: 0.40 },
+            { level: 2, grid: 4, multiplier: 3, specialBoxes: 1, winChance: 0.30 },
+            { level: 3, grid: 5, multiplier: 5, specialBoxes: 1, winChance: 0.22 },
+            { level: 4, grid: 6, multiplier: 10, specialBoxes: 1, winChance: 0.15 }
         ];
 
         // Game State
@@ -658,7 +1630,8 @@
             maxUnlockedLevel: 1,
             gameActive: false,
             specialBoxIndex: -1,
-            totalBoxes: 4
+            totalBoxes: 3,
+            currentBet: 200
         };
 
         // Mock user data (start with some balance for testing)
@@ -669,29 +1642,75 @@
             levelsCompleted: []
         };
 
-        // Sound effects
+        // Enhanced sound effects
         function playSound(type) {
             try {
                 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                
+                if (type === 'win') {
+                    // Pleasant success sound - ascending chime
+                    const oscillator1 = audioCtx.createOscillator();
+                    const oscillator2 = audioCtx.createOscillator();
+                    const gainNode = audioCtx.createGain();
+                    
+                    oscillator1.frequency.setValueAtTime(800, audioCtx.currentTime);
+                    oscillator1.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.3);
+                    
+                    oscillator2.frequency.setValueAtTime(1000, audioCtx.currentTime);
+                    oscillator2.frequency.exponentialRampToValueAtTime(1500, audioCtx.currentTime + 0.3);
+                    
+                    oscillator1.connect(gainNode);
+                    oscillator2.connect(gainNode);
+                    gainNode.connect(audioCtx.destination);
+                    
+                    gainNode.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+                    
+                    oscillator1.start(audioCtx.currentTime);
+                    oscillator2.start(audioCtx.currentTime);
+                    oscillator1.stop(audioCtx.currentTime + 0.4);
+                    oscillator2.stop(audioCtx.currentTime + 0.4);
+                    
+                } else if (type === 'lose') {
+                    // Blast sound - explosion effect
                 const oscillator = audioCtx.createOscillator();
                 const gainNode = audioCtx.createGain();
+                    const filter = audioCtx.createBiquadFilter();
+                    
+                    oscillator.frequency.setValueAtTime(200, audioCtx.currentTime);
+                    oscillator.frequency.exponentialRampToValueAtTime(50, audioCtx.currentTime + 0.3);
+                    
+                    filter.type = 'lowpass';
+                    filter.frequency.setValueAtTime(1000, audioCtx.currentTime);
+                    filter.frequency.exponentialRampToValueAtTime(200, audioCtx.currentTime + 0.3);
+                    
+                    oscillator.connect(filter);
+                    filter.connect(gainNode);
+                    gainNode.connect(audioCtx.destination);
+                    
+                    gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+                    
+                    oscillator.start(audioCtx.currentTime);
+                    oscillator.stop(audioCtx.currentTime + 0.3);
+                    
+                } else if (type === 'click') {
+                    // Hammer hit sound
+                    const oscillator = audioCtx.createOscillator();
+                    const gainNode = audioCtx.createGain();
+                    
+                    oscillator.frequency.setValueAtTime(300, audioCtx.currentTime);
+                    oscillator.frequency.exponentialRampToValueAtTime(150, audioCtx.currentTime + 0.1);
                 
                 oscillator.connect(gainNode);
                 gainNode.connect(audioCtx.destination);
                 
-                if (type === 'win') {
-                    oscillator.frequency.setValueAtTime(800, audioCtx.currentTime);
-                    oscillator.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.1);
-                } else if (type === 'lose') {
-                    oscillator.frequency.setValueAtTime(400, audioCtx.currentTime);
-                    oscillator.frequency.exponentialRampToValueAtTime(200, audioCtx.currentTime + 0.2);
+                    gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+                    
+                    oscillator.start(audioCtx.currentTime);
+                oscillator.stop(audioCtx.currentTime + 0.1);
                 }
-                
-                gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
-                gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
-                
-                oscillator.start(audioCtx.currentTime);
-                oscillator.stop(audioCtx.currentTime + 0.2);
             } catch (e) {
                 console.log('Audio not supported');
             }
@@ -699,10 +1718,17 @@
 
         // Initialize game
         function initGame() {
+            // Initialize game state properly
+            gameState.currentLevel = 1;
+            gameState.maxUnlockedLevel = 1;
+            gameState.totalBoxes = 3;
+            gameState.currentBet = 200;
+            
             updateWalletDisplay();
             updateLevelDisplay();
             updateLevelPath();
             generateGrid();
+            updateBetDisplay();
             
             // Add click handler for play button
             document.getElementById('playButton').addEventListener('click', startGame);
@@ -716,15 +1742,29 @@
                         updateLevelDisplay();
                         updateLevelPath();
                         generateGrid();
+                        updateBetDisplay();
                     }
                 });
             });
             
-            // Update live players count
+            // Add bet input listener with debouncing
+            let betInputTimeout;
+            document.getElementById('betAmount').addEventListener('input', function() {
+                clearTimeout(betInputTimeout);
+                betInputTimeout = setTimeout(() => {
+                    const betAmount = parseInt(this.value) || 200;
+                    gameState.currentBet = Math.max(200, Math.min(betAmount, userData.balance));
+                    this.value = gameState.currentBet;
+                    updateBetDisplay();
+                    updatePlayButton();
+                }, 100);
+            });
+            
+            // Update live players count less frequently
             setInterval(() => {
                 const count = 240 + Math.floor(Math.random() * 20);
-                document.querySelector('.live-players').textContent = `🔴 LIVE: ${count} players online`;
-            }, 5000);
+                document.querySelector('.live-players').textContent = `🌌 LIVE: ${count} quantum smashers`;
+            }, 10000);
         }
 
         // Update wallet display
@@ -735,23 +1775,50 @@
         // Update level display
         function updateLevelDisplay() {
             const currentLevelConfig = LEVELS[gameState.currentLevel - 1];
-            const winAmount = 200 * currentLevelConfig.multiplier;
+            const winAmount = gameState.currentBet * currentLevelConfig.multiplier;
             
+            // Update content directly
             document.getElementById('currentLevel').textContent = gameState.currentLevel;
             document.getElementById('currentReward').textContent = currentLevelConfig.multiplier + 'x';
             document.getElementById('currentAmount').textContent = winAmount;
             
             const levelInfo = document.getElementById('levelInfo');
-            levelInfo.innerHTML = `🎯 Find the special box in this ${currentLevelConfig.grid}×${currentLevelConfig.grid} grid to win ${currentLevelConfig.multiplier}x and unlock Level ${gameState.currentLevel + 1}!`;
+            if (gameState.currentLevel === 4) {
+                levelInfo.innerHTML = `⚛️ Find the quantum box in this ${currentLevelConfig.grid}-box grid to smash and win ${currentLevelConfig.multiplier}x quantum energy!`;
+            } else {
+                levelInfo.innerHTML = `⚛️ Find the quantum box in this ${currentLevelConfig.grid}-box grid to smash and win ${currentLevelConfig.multiplier}x quantum energy!`;
+            }
             
             // Update progress bar
             const progress = ((gameState.currentLevel - 1) / (LEVELS.length - 1)) * 100;
-            document.getElementById('progressFill').style.width = progress + '%';
+            const progressFill = document.getElementById('progressFill');
+            progressFill.style.width = progress + '%';
+            
+            updatePlayButton();
+        }
+
+        // Update bet display
+        function updateBetDisplay() {
+            const currentLevelConfig = LEVELS[gameState.currentLevel - 1];
+            const potentialWin = gameState.currentBet * currentLevelConfig.multiplier;
+            
+            document.getElementById('betAmount').value = gameState.currentBet;
+            document.getElementById('potentialWin').textContent = `⚛️ Quantum Potential: ₹${potentialWin} (${currentLevelConfig.multiplier}x)`;
+            
+            // Update active bet button
+            document.querySelectorAll('.bet-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (parseInt(btn.textContent.replace('₹', '')) === gameState.currentBet) {
+                    btn.classList.add('active');
+                }
+            });
+        }
             
             // Update play button
+        function updatePlayButton() {
             const playButton = document.getElementById('playButton');
-            playButton.textContent = `🎲 PLAY LEVEL ${gameState.currentLevel} - ₹200 🎲`;
-            playButton.disabled = userData.balance < 200;
+            playButton.textContent = `⚛️ QUANTUM SMASH LEVEL ${gameState.currentLevel} - ₹${gameState.currentBet} ⚛️`;
+            playButton.disabled = userData.balance < gameState.currentBet;
         }
 
         // Update level path
@@ -759,14 +1826,19 @@
             const levelNodes = document.querySelectorAll('.level-node');
             levelNodes.forEach((node, index) => {
                 const level = index + 1;
+                
+                // Remove all classes first
                 node.classList.remove('current', 'completed', 'locked');
+                
+                // Clear any existing animations
+                node.style.animation = '';
                 
                 if (level < gameState.currentLevel) {
                     node.classList.add('completed');
                 } else if (level === gameState.currentLevel) {
                     node.classList.add('current');
-                } else if (level <= gameState.maxUnlockedLevel) {
-                    // Unlocked but not current
+                    // Add current pulse animation
+                    node.style.animation = 'currentPulse 2s ease-in-out infinite';
                 } else {
                     node.classList.add('locked');
                 }
@@ -779,15 +1851,26 @@
             const grid = document.getElementById('gameGrid');
             const gridSize = currentLevelConfig.grid;
             
-            grid.className = `game-grid grid-${gridSize}x${gridSize}`;
+            // Calculate grid layout based on number of boxes
+            let gridClass = 'grid-3x3';
+            if (gridSize === 4) gridClass = 'grid-4x4';
+            else if (gridSize === 5) gridClass = 'grid-5x5';
+            else if (gridSize === 6) gridClass = 'grid-6x6';
+            
+            // Update grid class and clear content
+            grid.className = `game-grid ${gridClass}`;
             grid.innerHTML = '';
+            gameState.totalBoxes = gridSize;
             
-            gameState.totalBoxes = gridSize * gridSize;
-            
+            // Create boxes with "SMASH ME" text
             for (let i = 0; i < gameState.totalBoxes; i++) {
                 const box = document.createElement('div');
                 box.className = 'box';
                 box.setAttribute('data-index', i);
+                box.innerHTML = `
+                    <div style="font-size: 0.9em; font-weight: 800; margin-bottom: 2px;">⚛️</div>
+                    <div style="font-size: 0.7em; font-weight: 600;">SMASH ME</div>
+                `;
                 box.addEventListener('click', () => selectBox(i));
                 grid.appendChild(box);
             }
@@ -800,14 +1883,14 @@
 
         // Start game
         function startGame() {
-            if (userData.balance < 200) {
-                alert('Insufficient balance! Please add money to your wallet.');
+            if (userData.balance < gameState.currentBet) {
+                alert('Insufficient quantum energy! Please add quantum energy to your wallet or reduce your bet amount.');
                 return;
             }
             
             if (gameState.gameActive) return;
             
-            userData.balance -= 200;
+            userData.balance -= gameState.currentBet;
             updateWalletDisplay();
             
             gameState.gameActive = true;
@@ -815,7 +1898,7 @@
             
             document.getElementById('playButton').disabled = true;
             
-            // Disable box interactions until selection
+            // Enable box interactions
             document.querySelectorAll('.box').forEach(box => {
                 box.style.pointerEvents = 'auto';
             });
@@ -832,90 +1915,89 @@
                 return;
             }
             
+            // Play hammer hit sound
+            playSound('click');
+            
             // Disable all box interactions
             document.querySelectorAll('.box').forEach(box => {
                 box.style.pointerEvents = 'none';
             });
             
-            const currentLevelConfig = LEVELS[gameState.currentLevel - 1];
-            const isSpecialBox = index === gameState.specialBoxIndex;
-            let won = false;
-            let winAmount = 0;
-            
-            if (isSpecialBox) {
-                won = true;
-                winAmount = 200 * currentLevelConfig.multiplier;
-                userData.balance += winAmount;
-                userData.totalWon += winAmount;
-                playSound('win');
+                const currentLevelConfig = LEVELS[gameState.currentLevel - 1];
+                const isSpecialBox = index === gameState.specialBoxIndex;
+                let won = false;
+                let winAmount = 0;
                 
+                if (isSpecialBox) {
+                won = true;
+                winAmount = gameState.currentBet * currentLevelConfig.multiplier;
+                        userData.balance += winAmount;
+                        userData.totalWon += winAmount;
+                        
                 // Show breaking animation for selected box
                 clickedBox.classList.add('breaking');
                 
                 // Show confetti for win
-                if (typeof confetti !== 'undefined') {
-                    confetti({
-                        particleCount: 100,
-                        spread: 70,
-                        origin: { y: 0.6 }
-                    });
-                    
-                    setTimeout(() => {
-                        confetti({
-                            particleCount: 50,
-                            angle: 60,
-                            spread: 55,
-                            origin: { x: 0 }
-                        });
-                        confetti({
-                            particleCount: 50,
-                            angle: 120,
-                            spread: 55,
-                            origin: { x: 1 }
-                        });
-                    }, 200);
-                }
+                        if (typeof confetti !== 'undefined') {
+                            confetti({
+                                particleCount: 100,
+                                spread: 70,
+                                origin: { y: 0.6 }
+                            });
+                            
+                            setTimeout(() => {
+                                confetti({
+                                    particleCount: 50,
+                                    angle: 60,
+                                    spread: 55,
+                                    origin: { x: 0 }
+                                });
+                                confetti({
+                                    particleCount: 50,
+                                    angle: 120,
+                                    spread: 55,
+                                    origin: { x: 1 }
+                                });
+                            }, 200);
+                        }
             } else {
-                playSound('lose');
                 clickedBox.classList.add('breaking');
-            }
-            
-            // Reveal all boxes after break animation
-            revealAllBoxes(index, won, winAmount);
-            
-            gameState.gameActive = false;
-            userData.gamesPlayed++;
-            updateWalletDisplay();
-            
-            // Show result modal after all animations
-            setTimeout(() => {
-                showResultModal(won, winAmount, currentLevelConfig);
-            }, 1000);
+                }
+                
+                // Reveal all boxes after break animation
+                revealAllBoxes(index, won, winAmount);
+                
+                gameState.gameActive = false;
+                userData.gamesPlayed++;
+                updateWalletDisplay();
+                
+                // Show result modal after all animations
+                setTimeout(() => {
+                    showResultModal(won, winAmount, currentLevelConfig);
+            }, 800);
         }
 
         // Reveal all boxes with proper animations
         function revealAllBoxes(selectedIndex, won, winAmount) {
             document.querySelectorAll('.box').forEach((box, index) => {
                 if (index === selectedIndex) {
-                    // Selected box already has breaking animation
+                    // Selected box
                     setTimeout(() => {
                         if (won) {
                             box.classList.remove('breaking');
                             box.classList.add('revealed-win');
-                            box.innerHTML = `<div style="font-size: 0.8em;">💰</div><div>${winAmount / 200}x</div>`;
+                            box.innerHTML = `<div style="font-size: 0.8em;">💰</div><div>${winAmount / gameState.currentBet}x</div>`;
+                            playSound('win');
                         } else {
                             box.classList.remove('breaking');
                             box.classList.add('revealed-empty');
-                            box.textContent = '❌';
+                            box.textContent = '💥';
+                            playSound('lose');
                         }
                     }, 100);
                 } else {
-                    // Other boxes break and reveal with staggered timing
+                    // Other boxes
                     setTimeout(() => {
-                        box.classList.add('breaking');
-                        
-                        setTimeout(() => {
-                            box.classList.remove('breaking');
                             if (index === gameState.specialBoxIndex && !won) {
                                 box.classList.add('revealed-special');
                                 const multiplier = LEVELS[gameState.currentLevel - 1].multiplier;
@@ -924,8 +2006,7 @@
                                 box.classList.add('revealed-empty');
                                 box.textContent = '';
                             }
-                        }, 600);
-                    }, index * 100);
+                    }, 150);
                 }
             });
         }
@@ -935,54 +2016,57 @@
             const modal = document.getElementById('resultModal');
             const content = document.getElementById('resultContent');
             
-            if (won) {
-                // Level completed
-                if (!userData.levelsCompleted.includes(gameState.currentLevel)) {
-                    userData.levelsCompleted.push(gameState.currentLevel);
-                }
-                
-                if (gameState.currentLevel === 7) {
-                    // Game completed
-                    content.innerHTML = `
-                        <h2>🎊 CHAMPION! 🎊</h2>
-                        <div class="win-amount">+₹${winAmount}</div>
-                        <p>🏆 You've completed ALL levels!</p>
-                        <p>💰 Your new balance: ₹${userData.balance}</p>
-                        <p>🎯 You can now restart from Level 1 for more wins!</p>
-                    `;
+                            if (won) {
+                    // Level completed
+                    if (!userData.levelsCompleted.includes(gameState.currentLevel)) {
+                        userData.levelsCompleted.push(gameState.currentLevel);
+                    }
                     
-                    // Reset to level 1 after completing all levels
-                    setTimeout(() => {
-                        gameState.currentLevel = 1;
-                        gameState.maxUnlockedLevel = 7; // Keep all levels unlocked
-                    }, 2000);
+                    if (gameState.currentLevel === 4) {
+                        // Game completed
+                        content.innerHTML = `
+                            <h2 style="margin-bottom: 15px;">⚛️ QUANTUM CHAMPION! ⚛️</h2>
+                            <div class="win-amount">+₹${winAmount}</div>
+                            <p style="margin: 10px 0;">🏆 You've smashed ALL quantum levels!</p>
+                            <p style="margin: 10px 0;">⚛️ Your new quantum energy: ₹${userData.balance}</p>
+                            <p style="margin: 10px 0;">🎯 You can now restart from Quantum Level 1 for more smashing!</p>
+                        `;
+                        
+                        // Reset to level 1 after completing all levels
+                        setTimeout(() => {
+                            gameState.currentLevel = 1;
+                            gameState.maxUnlockedLevel = 4; // Keep all levels unlocked
+                            updateLevelDisplay();
+                            updateLevelPath();
+                            generateGrid();
+                            updateBetDisplay();
+                        }, 2000);
+                    } else {
+                        // Level up
+                        content.innerHTML = `
+                            <h2 style="margin-bottom: 15px;">⚛️ QUANTUM LEVEL COMPLETED! ⚛️</h2>
+                            <div class="win-amount">+₹${winAmount}</div>
+                            <p style="margin: 10px 0;">🆙 Quantum Level ${gameState.currentLevel} → Quantum Level ${gameState.currentLevel + 1}</p>
+                            <p style="margin: 10px 0;">⚛️ Your new quantum energy: ₹${userData.balance}</p>
+                            <p style="margin: 10px 0;">🎯 Next: ${LEVELS[gameState.currentLevel].grid}-box grid, ${LEVELS[gameState.currentLevel].multiplier}x quantum multiplier!</p>
+                        `;
+                        
+                        // Level up
+                        gameState.currentLevel++;
+                        gameState.maxUnlockedLevel = Math.max(gameState.maxUnlockedLevel, gameState.currentLevel);
+                        playSound('win');
+                    }
                 } else {
-                    // Level up
                     content.innerHTML = `
-                        <h2>🎉 LEVEL COMPLETED! 🎉</h2>
-                        <div class="win-amount">+₹${winAmount}</div>
-                        <p>🆙 Level ${gameState.currentLevel} → Level ${gameState.currentLevel + 1}</p>
-                        <p>💰 Your new balance: ₹${userData.balance}</p>
-                        <p>🎯 Next: ${LEVELS[gameState.currentLevel].grid}×${LEVELS[gameState.currentLevel].grid} grid, ${LEVELS[gameState.currentLevel].multiplier}x multiplier!</p>
+                        <h2 style="margin-bottom: 15px;">😔 Quantum Smash Failed!</h2>
+                        <p style="margin: 10px 0;">You didn't find the quantum box this time.</p>
+                        <p style="margin: 10px 0;">💡 The ${levelConfig.multiplier}x quantum box was there - keep smashing!</p>
+                        <p style="margin: 10px 0;">⚛️ Your quantum energy: ₹${userData.balance}</p>
+                        <p style="margin: 10px 0;">🎯 ${userData.balance >= 200 ? 'Try Quantum Level ' + gameState.currentLevel + ' again!' : 'Add quantum energy to continue smashing!'}</p>
                     `;
-                    
-                    // Level up
-                    gameState.currentLevel++;
-                    gameState.maxUnlockedLevel = Math.max(gameState.maxUnlockedLevel, gameState.currentLevel);
-                    playSound('win');
                 }
-            } else {
-                content.innerHTML = `
-                    <h2>😔 Try Again!</h2>
-                    <p>You didn't find the special box this time.</p>
-                    <p>💡 The ${levelConfig.multiplier}x box was there - keep trying!</p>
-                    <p>💰 Your balance: ₹${userData.balance}</p>
-                    <p>🎯 ${userData.balance >= 200 ? 'Try Level ' + gameState.currentLevel + ' again!' : 'Add balance to continue playing!'}</p>
-                `;
-            }
             
             modal.style.display = 'flex';
-            updateLiveWinners();
         }
 
         // Close result modal
@@ -993,8 +2077,14 @@
 
         // Reset game with proper cleanup
         function resetGame() {
+            // Reset game state
+            gameState.gameActive = false;
+            gameState.specialBoxIndex = -1;
+            
             updateLevelDisplay();
+            updateLevelPath();
             generateGrid();
+            updateBetDisplay();
             document.getElementById('playButton').disabled = false;
             
             // Re-enable box interactions
@@ -1005,6 +2095,19 @@
 
         // Payment system variables
         let selectedPaymentAmount = 0;
+        let selectedWithdrawalAmount = 0;
+
+        // Bet amount functions
+        function setBetAmount(amount) {
+            if (amount >= 200 && amount <= userData.balance) {
+                gameState.currentBet = amount;
+                document.getElementById('betAmount').value = amount;
+                updateBetDisplay();
+                updatePlayButton();
+            } else if (amount > userData.balance) {
+                alert('Insufficient quantum energy! Please add quantum energy to your wallet or choose a lower bet amount.');
+            }
+        }
 
         // Payment modal functions
         function showPaymentModal() {
@@ -1033,7 +2136,7 @@
                 selectedPaymentAmount = customAmount;
                 showPaymentStep();
             } else {
-                alert('Please enter an amount between ₹100 and ₹50,000');
+                alert('Please enter a quantum energy amount between ₹100 and ₹50,000');
             }
         }
 
@@ -1052,23 +2155,23 @@
         function uploadScreenshot() {
             const fileInput = document.getElementById('screenshotFile');
             if (fileInput.files.length === 0) {
-                alert('Please select a screenshot first!');
+                alert('Please select a quantum transfer screenshot first!');
                 return;
             }
             
             if (selectedPaymentAmount <= 0) {
-                alert('Error: Invalid payment amount!');
+                alert('Error: Invalid quantum energy amount!');
                 return;
             }
             
             // Simulate upload and verification
-            alert(`📸 Screenshot uploaded successfully!\n\nAmount: ₹${selectedPaymentAmount}\n⏳ Payment verification in progress...\n\nAdmin will verify your payment within 2-3 minutes and update your balance.`);
+            alert(`📸 Quantum transfer proof uploaded successfully!\n\nQuantum Energy: ₹${selectedPaymentAmount}\n⏳ Quantum verification in progress...\n\nAdmin will verify your quantum transfer within 2-3 minutes and update your quantum energy.`);
             
             // Simulate balance update after delay (in real app, admin would do this)
             setTimeout(() => {
                 userData.balance += selectedPaymentAmount;
                 updateWalletDisplay();
-                alert(`✅ Payment verified! ₹${selectedPaymentAmount} added to your wallet!\n\nNew Balance: ₹${userData.balance}`);
+                alert(`✅ Quantum transfer verified! ₹${selectedPaymentAmount} quantum energy added to your wallet!\n\nNew Quantum Energy: ₹${userData.balance}`);
                 
                 // Show success animation
                 if (typeof confetti !== 'undefined') {
@@ -1083,29 +2186,85 @@
             closePaymentModal();
         }
 
-        // Update live winners simulation
-        function updateLiveWinners() {
-            const winners = [
-                '🎉 Rahul completed Level 5 (8x) - 2 min ago',
-                '💰 Priya completed Level 3 (3x) - 5 min ago',
-                '🔥 Amit completed Level 6 (12x) - 8 min ago',
-                '✨ Sneha completed Level 2 (2x) - 12 min ago',
-                '🎯 Vikash completed Level 4 (5x) - 15 min ago',
-                '🏆 Maya became CHAMPION (20x) - 18 min ago',
-                '⭐ Ravi completed Level 7 (20x) - 22 min ago',
-                '🚀 Anita completed Level 1 (1.5x) - 25 min ago'
-            ];
-            
-            const winnerElement = document.getElementById('recentWinners');
-            const shuffled = winners.sort(() => 0.5 - Math.random()).slice(0, 3);
-            winnerElement.innerHTML = shuffled.map(winner => `<p>${winner}</p>`).join('');
+        // Withdrawal functions
+        function showWithdrawalModal() {
+            document.getElementById('withdrawalModal').style.display = 'flex';
+            document.getElementById('withdrawalAmountStep').style.display = 'block';
+            document.getElementById('withdrawalDetailsStep').style.display = 'none';
+            document.getElementById('availableBalance').textContent = userData.balance;
+            document.getElementById('withdrawalAmount').value = '';
         }
+
+        function closeWithdrawalModal() {
+            document.getElementById('withdrawalModal').style.display = 'none';
+            // Reset the modal
+            document.getElementById('withdrawalAmountStep').style.display = 'block';
+            document.getElementById('withdrawalDetailsStep').style.display = 'none';
+            document.getElementById('withdrawalAmount').value = '';
+            selectedWithdrawalAmount = 0;
+        }
+
+        function setWithdrawalAmount(amount) {
+            if (amount <= userData.balance && amount >= 100) {
+                selectedWithdrawalAmount = amount;
+                document.getElementById('withdrawalAmount').value = amount;
+                showWithdrawalDetailsStep();
+            } else if (amount > userData.balance) {
+                alert('Insufficient quantum energy!');
+            } else {
+                alert('Minimum quantum withdrawal amount is ₹100');
+            }
+        }
+
+        function showWithdrawalDetailsStep() {
+            const amount = document.getElementById('withdrawalAmount').value;
+            if (!amount || amount < 100 || amount > userData.balance) {
+                alert('Please enter a valid quantum energy amount between ₹100 and your current quantum energy');
+                return;
+            }
+            
+            selectedWithdrawalAmount = parseInt(amount);
+            document.getElementById('withdrawalAmountStep').style.display = 'none';
+            document.getElementById('withdrawalDetailsStep').style.display = 'block';
+            document.getElementById('withdrawalSelectedAmount').textContent = '₹' + selectedWithdrawalAmount;
+        }
+
+        function goBackToWithdrawalAmount() {
+            document.getElementById('withdrawalDetailsStep').style.display = 'none';
+            document.getElementById('withdrawalAmountStep').style.display = 'block';
+        }
+
+        function submitWithdrawal() {
+            const upiId = document.getElementById('upiId').value.trim();
+            const playerName = document.getElementById('playerName').value.trim();
+            const playerPhone = document.getElementById('playerPhone').value.trim();
+            
+            if (!upiId || !playerName || !playerPhone) {
+                alert('Please fill in all the quantum fields!');
+                return;
+            }
+            
+            if (selectedWithdrawalAmount <= 0 || selectedWithdrawalAmount > userData.balance) {
+                alert('Invalid quantum withdrawal amount!');
+                return;
+            }
+            
+            // Simulate withdrawal request
+            alert(`🌌 Quantum withdrawal request submitted successfully!\n\nQuantum Energy: ₹${selectedWithdrawalAmount}\nUPI ID: ${upiId}\nName: ${playerName}\nPhone: ${playerPhone}\n\n⏳ Your quantum withdrawal will be processed within 24 hours.`);
+            
+            // Deduct from balance
+            userData.balance -= selectedWithdrawalAmount;
+            updateWalletDisplay();
+            
+            closeWithdrawalModal();
+        }
+
+
 
         // Initialize the game when page loads
         window.addEventListener('load', initGame);
 
-        // Simulate live winner updates
-        setInterval(updateLiveWinners, 15000);
+
     </script>
 </body>
 </html>
